@@ -1458,6 +1458,7 @@ MonoBehaviour:
   gridGO: {fileID: 1559396219}
   Oper: 0
   color: 0
+  OperStack: 000000000000000000000000000000000000000000000000
 --- !u!4 &726897438
 Transform:
   m_ObjectHideFlags: 0
