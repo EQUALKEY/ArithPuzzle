@@ -4,8 +4,24 @@ using UnityEngine;
 
 public class MinusButton : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public GameObject EC;
+    private ec eccs;
+
+    public GameObject Cover;
+
+    private void Awake()
+    {
+        eccs = EC.GetComponent<ec>();
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        eccs.Clear_Oper();
+        eccs.Oper = 2;
+        Cover.SetActive(true);
+    }
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -13,4 +29,8 @@ public class MinusButton : MonoBehaviour {
 	void Update () {
 		
 	}
+    public void Initialize()
+    {
+        Cover.SetActive(false);
+    }
 }

@@ -3,9 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DivisionButton : MonoBehaviour {
+    public GameObject EC;
+    private ec eccs;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject Cover;
+
+    private void Awake()
+    {
+        eccs = EC.GetComponent<ec>();
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        eccs.Clear_Oper();
+        eccs.Oper = 4;
+        Cover.SetActive(true);
+    }
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -13,4 +28,8 @@ public class DivisionButton : MonoBehaviour {
 	void Update () {
 		
 	}
+    public void Initialize()
+    {
+        Cover.SetActive(false);
+    }
 }

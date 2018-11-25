@@ -7,7 +7,8 @@ public class PlusButton : MonoBehaviour {
     public GameObject EC;
     private ec eccs;
 
-    public GameObject Pallete;
+    public GameObject Palette;
+    public GameObject[] Cover = new GameObject[5];
 
     private void Awake()
     {
@@ -16,7 +17,9 @@ public class PlusButton : MonoBehaviour {
 
     private void OnMouseUpAsButton()
     {
-        Pallete.SetActive(true);
+        eccs.Clear_Oper();
+        eccs.Oper = 1;
+        Palette.SetActive(true);
     }
     // Use this for initialization
     void Start () {
@@ -27,4 +30,10 @@ public class PlusButton : MonoBehaviour {
 	void Update () {
 		
 	}
+    public void Initialize()
+    {
+        Palette.SetActive(false);
+        for (int i = 0; i < 5; i++)
+            Cover[i].SetActive(false);
+    }
 }

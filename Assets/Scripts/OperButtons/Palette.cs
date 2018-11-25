@@ -6,7 +6,10 @@ public class Palette : MonoBehaviour {
 
     public GameObject EC;
     private ec eccs;
+
     
+
+
     private void Awake()
     {
         eccs = EC.GetComponent<ec>();
@@ -24,4 +27,5 @@ public class Palette : MonoBehaviour {
             //this.gameObject.SetActive(false);
         }
 	}
+    
 }

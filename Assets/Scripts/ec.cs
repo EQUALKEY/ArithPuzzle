@@ -5,7 +5,7 @@ using UnityEngine;
 public class ec : MonoBehaviour {
 
 
-    public Vector2[,] gridArr = new Vector2 [11, 11];
+    public Vector2[,] gridArr;
 
     public int[,] gridInit = new int[11, 11];
     public int[,] gridNow = new int[11, 11];
@@ -20,7 +20,22 @@ public class ec : MonoBehaviour {
     public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷
     public int color; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
-    public int[] OperStack = new int[6]; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
+ //?   public int[] OperStack = new int[6]; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
+
+    public int[] Stack_Oper; // 0: null, 1 : + , 2 : - , 3: ×, 4 : ÷
+    public int[] Stack_num;
+
+
+    public GameObject PlusButtonGO;
+    private PlusButton PBcs;
+    public GameObject PalleteGO;
+    private Palette Pcs;
+    public GameObject MinusButtonGO;
+    private MinusButton MBcs;
+    public GameObject MultiplicationButtonGO;
+    private MultiplicationButton MPBcs;
+    public GameObject DivisionButtonGO;
+    private DivisionButton DBcs;
 
 
     struct xy // 그냥 x,y를 표시하기 위함. pair랑 같음
@@ -39,14 +54,21 @@ public class ec : MonoBehaviour {
 
     private void Awake()
     {
+        gridArr = new Vector2[11, 11];
+
         gridcs = gridGO.GetComponent<grid>();
+        PBcs = PlusButtonGO.GetComponent<PlusButton>();
+        Pcs = PalleteGO.GetComponent<Palette>();
+        MBcs = MinusButtonGO.GetComponent<MinusButton>();
+        MPBcs = MultiplicationButtonGO.GetComponent<MultiplicationButton>();
+        DBcs = DivisionButtonGO.GetComponent<DivisionButton>();
 
         gridSize = 10;  // grid 사이즈 설정. 후에 stage별로 받아와야함.
 
         gridcs.MakeGrid(gridSize);
 
         SetOperStack();
-
+        SetNumStack();
     }
 
     // Use this for initialization
@@ -91,6 +113,16 @@ public class ec : MonoBehaviour {
                 
     }
 
+    public void Clear_Oper()
+    {
+        Oper = 0;
+        color = 0;
+        PBcs.Initialize();
+        MBcs.Initialize();
+        MPBcs.Initialize();
+        DBcs.Initialize();
+
+    }
     public void StageEnd()
     {
 
@@ -98,8 +130,13 @@ public class ec : MonoBehaviour {
     void SetOperStack()
     {
         //Operstack = Load 해오기
-
-        //숫자들 set해주기
+        
+        //Stack_Oper[] 값넣어주기
+    }
+    void SetNumStack()
+    {
+        //Load
+        //Stack_Num[] 값넣어주기
     }
     void Operate()
     {

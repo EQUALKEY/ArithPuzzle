@@ -25,7 +25,7 @@ public class Cover : MonoBehaviour {
 
     public void Initalize()
     {
-        for (int i = 0; i < transform.GetChildCount(); i++)
+        for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
     }
     public void SetColor(int color)
