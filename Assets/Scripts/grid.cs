@@ -8,6 +8,7 @@ public class grid : MonoBehaviour {
     private ec eccs;
 
     public GameObject LeftTop,RightBottom;
+    public GameObject LeftTopView,RightBottomView;
     public GameObject BlockPref;
     public GameObject Blocks; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
@@ -27,19 +28,22 @@ public class grid : MonoBehaviour {
     public void MakeGrid(int num)
     {
         float dis = (RightBottom.transform.position.x - LeftTop.transform.position.x)/(float)(num);
-        for(int i = 0; i <= num; i++)
+        float disView = (RightBottomView.transform.position.x - LeftTopView.transform.position.x) / (float)(num);
+        for (int i = 0; i <= num; i++)
         {
             for(int j = 0; j <= num; j++)
             {
 
                 eccs.gridArr[i, j] = new Vector2(LeftTop.transform.position.x + (dis * i), LeftTop.transform.position.y - (dis * j));
-           
+                eccs.gridViewArr[i,j]= new Vector2(LeftTopView.transform.position.x + (disView * i), LeftTopView.transform.position.y - (disView * j));
+
                 if (i != num && j != num)
                 {
                     GameObject newblock = Instantiate(BlockPref, eccs.gridArr[i, j], new Quaternion(0f, 0f, 0f, 1f));
                     newblock.name = "Block(" + i + "," + j + ")";
                     newblock.transform.SetParent(Blocks.transform);
                     ChangeBlockColor(i, j, eccs.gridInit[i, j]);
+                    eccs.gridNow[i, j] = eccs.gridInit[i, j];
                 }
             }
         }

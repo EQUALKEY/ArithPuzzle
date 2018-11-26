@@ -17,9 +17,12 @@ public class PlusButton : MonoBehaviour {
 
     private void OnMouseUpAsButton()
     {
-        eccs.Clear_Oper();
-        eccs.Oper = 1;
-        Palette.SetActive(true);
+        if (eccs.Stack_Oper[1] > 0)
+        {
+            eccs.Clear_Oper();
+            eccs.Oper = 1;
+            Palette.SetActive(true);
+        }
     }
     // Use this for initialization
     void Start () {

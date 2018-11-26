@@ -16,9 +16,12 @@ public class MultiplicationButton : MonoBehaviour {
 
     private void OnMouseUpAsButton()
     {
-        eccs.Clear_Oper();
-        eccs.Oper = 3;
-        Cover.SetActive(true);
+        if (eccs.Stack_Oper[3] > 0)
+        {
+            eccs.Clear_Oper();
+            eccs.Oper = 3;
+            Cover.SetActive(true);
+        }
     }
     // Use this for initialization
     void Start () {

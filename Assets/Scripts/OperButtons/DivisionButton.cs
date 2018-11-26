@@ -15,9 +15,12 @@ public class DivisionButton : MonoBehaviour {
 
     private void OnMouseUpAsButton()
     {
-        eccs.Clear_Oper();
-        eccs.Oper = 4;
-        Cover.SetActive(true);
+        if (eccs.Stack_Oper[4] > 0)
+        {
+            eccs.Clear_Oper();
+            eccs.Oper = 4;
+            Cover.SetActive(true);
+        }
     }
     // Use this for initialization
     void Start () {

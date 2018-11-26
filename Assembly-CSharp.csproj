@@ -68,8 +68,10 @@
     <Compile Include="Assets\Scripts\OperButtons\DivisionButton.cs" />
     <Compile Include="Assets\Scripts\OperButtons\MinusButton.cs" />
     <Compile Include="Assets\Scripts\OperButtons\MultiplicationButton.cs" />
+    <Compile Include="Assets\Scripts\OperButtons\NumButton.cs" />
     <Compile Include="Assets\Scripts\OperButtons\Palette.cs" />
     <Compile Include="Assets\Scripts\OperButtons\PlusButton.cs" />
+    <Compile Include="Assets\Scripts\OperButtons\StackManager.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/gitclone/master/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

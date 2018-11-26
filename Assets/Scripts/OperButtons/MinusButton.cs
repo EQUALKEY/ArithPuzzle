@@ -16,9 +16,12 @@ public class MinusButton : MonoBehaviour {
 
     private void OnMouseUpAsButton()
     {
-        eccs.Clear_Oper();
-        eccs.Oper = 2;
-        Cover.SetActive(true);
+        if (eccs.Stack_Oper[2] > 0)
+        {
+            eccs.Clear_Oper();
+            eccs.Oper = 2;
+            Cover.SetActive(true);
+        }
     }
     // Use this for initialization
     void Start () {
