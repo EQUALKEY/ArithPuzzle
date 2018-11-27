@@ -232,22 +232,78 @@ public class ec : MonoBehaviour {
     }
     void Operate()
     {
+        xy LT, RB = new xy();
+        LT.x = startPos.x < endPos.x ? startPos.x : endPos.x;
+        LT.y = startPos.y < endPos.y ? startPos.y : endPos.y;
+        RB.x = startPos.x > endPos.x ? startPos.x : endPos.x;
+        RB.y = startPos.y > endPos.y ? startPos.y : endPos.y;
         if (Oper == 1) // +
         {
-            xy LT, RB = new xy();
-            LT = startPos;
-            RB = endPos;
-            for(int i = LT.x; i <= RB.x; i++)
+            bool isable = true;
+            int cnt=0;
+            for (int i = LT.x; i <= RB.x; i++)
             {
-                for(int j = LT.y; j <= RB.y; j++)
+                for (int j = LT.y; j <= RB.y; j++)
                 {
-                    gridcs.ChangeBlockColor(i, j, color);
+                    cnt++;
+                    if (gridNow[i, j] != 0)
+                        isable = false;
                 }
+            }
+            if (isable && cnt==Num)
+            {
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int j = LT.y; j <= RB.y; j++)
+                    {
+                        gridcs.ChangeBlockColor(i, j, color);
+                    }
+                }
+                Stack_Oper[Oper]--;
+                StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+                Stack_num[Num]--;
+                StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+                Clear_Oper();
+                Clear_Num();
+            }
+            else
+            {
+                PopDisable();
             }
         }
         else if(Oper == 2) // -
         {
-
+            bool isable = true;
+            int cnt = 0;
+            for (int i = LT.x; i <= RB.x; i++)
+            {
+                for (int j = LT.y; j <= RB.y; j++)
+                {
+                    cnt++;
+                    if (gridNow[i, j] == 0)
+                        isable = false;
+                }
+            }
+            if (isable && cnt == Num)
+            {
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int j = LT.y; j <= RB.y; j++)
+                    {
+                        gridcs.ChangeBlockColor(i, j, 0);
+                    }
+                }
+                Stack_Oper[Oper]--;
+                StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+                Stack_num[Num]--;
+                StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+                Clear_Oper();
+                Clear_Num();
+            }
+            else
+            {
+                PopDisable();
+            }
         }
         else if(Oper ==3) // ×
         {
@@ -262,6 +318,10 @@ public class ec : MonoBehaviour {
 
         }
         CheckAnswer();
+    }
+    void PopDisable()
+    {
+
     }
     void CheckAnswer()
     {
