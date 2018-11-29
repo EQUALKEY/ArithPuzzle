@@ -20,6 +20,8 @@ public class ec : MonoBehaviour {
     public GameObject gridGO;
     private grid gridcs;
     private int gridSize;
+    public GameObject gridAnswerGO;
+    private gridAnswer grAcs;
 
     // oper
     public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷
@@ -70,6 +72,7 @@ public class ec : MonoBehaviour {
         gridViewArr = new Vector2[11, 11];
 
         gridcs = gridGO.GetComponent<grid>();
+        grAcs = gridAnswerGO.GetComponent<gridAnswer>();
         PBcs = PlusButtonGO.GetComponent<PlusButton>();
         Pcs = PalleteGO.GetComponent<Palette>();
         MBcs = MinusButtonGO.GetComponent<MinusButton>();
@@ -90,6 +93,7 @@ public class ec : MonoBehaviour {
         gridSize = 10;  // grid 사이즈 설정. 후에 stage별로 받아와야함.
 
         gridcs.MakeGrid(gridSize);
+        grAcs.MakeGrid(gridSize);
 
         SetOperStack();
         SetNumStack();

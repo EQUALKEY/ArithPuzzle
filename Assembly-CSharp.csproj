@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ec.cs" />
     <Compile Include="Assets\Scripts\grid.cs" />
+    <Compile Include="Assets\Scripts\gridAnswer.cs" />
     <Compile Include="Assets\Scripts\OperButtons\ColorButton.cs" />
     <Compile Include="Assets\Scripts\OperButtons\Cover.cs" />
     <Compile Include="Assets\Scripts\OperButtons\DivisionButton.cs" />
