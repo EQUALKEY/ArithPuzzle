@@ -50,6 +50,9 @@ public class ec : MonoBehaviour {
     public GameObject[] NumGO = new GameObject[10];
     public NumButton[] Numcs = new NumButton[10];
 
+    public GameObject Overlay, Overlay_Top, Overlay_Bottom,Overlay_Left,Overlay_Right;
+    public GameObject Direction_Button, UpButton, DownButton, LeftButton, RightButton;
+
     public GameObject CleraBoard;
 
     struct xy // 그냥 x,y를 표시하기 위함. pair랑 같음
@@ -64,7 +67,7 @@ public class ec : MonoBehaviour {
         }
     }
     xy startPos, endPos;
-
+    xy OverlayStartPos, OverlayEndPos;
 
     private void Awake()
     {
@@ -119,19 +122,32 @@ public class ec : MonoBehaviour {
     void Update() {
 
         Vector2 NowCurPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-
             startPos = NowPos();
+            if (NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
+            {
+                Overlay.SetActive(true);
+                OverlayStartPos = NowPos();
+            }
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             endPos = NowPos();
             if (NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
             {
+                Overlay.SetActive(false);
                 Operate();
+                
             }
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
+        {
+            OverlayEndPos = NowPos();
+            Set_Overlay();
         }
     }
 
@@ -188,7 +204,13 @@ public class ec : MonoBehaviour {
         Stack_Num_Init = new int[] { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
     }
 
-
+    public void Clear()
+    {
+        Clear_Num();
+        Clear_Oper();
+        Overlay.SetActive(false);
+        Direction_Button.SetActive(false);
+    }
     public void Clear_Oper()
     {
         Oper = 0;
@@ -244,7 +266,7 @@ public class ec : MonoBehaviour {
         if (Oper == 1) // +
         {
             bool isable = true;
-            int cnt=0;
+            int cnt = 0;
             for (int i = LT.x; i <= RB.x; i++)
             {
                 for (int j = LT.y; j <= RB.y; j++)
@@ -254,7 +276,7 @@ public class ec : MonoBehaviour {
                         isable = false;
                 }
             }
-            if (isable && cnt==Num)
+            if (isable && cnt == Num)
             {
                 for (int i = LT.x; i <= RB.x; i++)
                 {
@@ -275,7 +297,7 @@ public class ec : MonoBehaviour {
                 PopDisable();
             }
         }
-        else if(Oper == 2) // -
+        else if (Oper == 2) // -
         {
             bool isable = true;
             int cnt = 0;
@@ -309,13 +331,111 @@ public class ec : MonoBehaviour {
                 PopDisable();
             }
         }
-        else if(Oper ==3) // ×
+        else if (Oper == 3) // ×
         {
+            Overlay.SetActive(true);
+            Direction_Button.SetActive(true);
+            bool isable =true;
+            for (int i = LT.x; i <= RB.x; i++)
+            {
+                for (int j = LT.y; j <= RB.y; j++)
+                {
+                    if (gridNow[i, j] == 0)
+                        isable = false;
+                }
+            }
+            if (!isable)
+            {
+                Overlay.SetActive(false);
+                Direction_Button.SetActive(false);
+                goto end;
+            }
 
+            bool isableUp,isableDown,isableLeft,isableRight;
+            isableUp = isableDown = isableLeft = isableRight = true;
+            //위로 가능한지 확인
+            if (LT.y - Num * (RB.y - LT.y+1) < 0)
+            {
+                isableUp = false;;
+            }
+            else
+            {
+                for(int i = LT.x; i <= RB.x; i++)
+                {
+                    for(int j= LT.y - 1; j >= LT.y - Num * (RB.y - LT.y + 1); j--)
+                    {
+                        if (gridNow[i, j] != 0)
+                            isableUp = false;
+                    }
+                }
+            }
+
+            //아래로 가능한지 확인
+            if (RB.y + Num * (RB.y - LT.y+1) >= gridSize)
+            {
+                isableDown = false; ;
+            }
+            else
+            {
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int j = RB.y + 1; j <= RB.y + Num * (RB.y - LT.y + 1); j++)
+                    {
+                        if (gridNow[i, j] != 0)
+                            isableDown = false;
+                    }
+                }
+            }
+            //왼쪽로 가능한지 확인
+            if(LT.x - Num * (RB.x - LT.x +1) <0)
+            {
+                isableLeft = false;
+            }
+            else
+            {
+                for (int i = LT.x-1; i >= LT.x - Num * (RB.x - LT.x + 1); i--)
+                {
+                    for (int j = LT.y ; j <= RB.y; j++)
+                    {
+                        if (gridNow[i, j] != 0)
+                            isableLeft = false;
+                    }
+                }
+            }
+
+            //오른쪽으로 가능한지 확인
+
+            if (RB.x + Num * (RB.x - LT.x + 1) >= gridSize)
+            {
+                isableRight = false;
+            }
+            else
+            {
+                for (int i = RB.x+1; i <= RB.x + Num * (RB.x - LT.x + 1); i++)
+                {
+                    for (int j = LT.y; j <= RB.y; j++)
+                    {
+                        if (gridNow[i, j] != 0)
+                            isableLeft = false;
+                    }
+                }
+            }
+
+            UpButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f + new Vector2(0f,0.5f);
+            DownButton.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x + 1, RB.y+1]) / 2f - new Vector2(0f, 0.5f);
+            LeftButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y+1]) / 2f - new Vector2(0.5f, 0f);
+            RightButton.transform.position = (gridViewArr[RB.x+1, LT.y] + gridViewArr[RB.x + 1, RB.y+1]) / 2f + new Vector2(0.5f, 0f);
+
+            UpButton.SetActive(isableUp);
+            DownButton.SetActive(isableDown);
+            LeftButton.SetActive(isableLeft);
+            RightButton.SetActive(isableRight);
+
+            end:;
         }
         else if(Oper ==4) // ÷
         {
-
+            Overlay.SetActive(true);
         }
         else // ?
         {
@@ -326,6 +446,24 @@ public class ec : MonoBehaviour {
     void PopDisable()
     {
 
+    }
+    void Set_Overlay()
+    {
+        xy LT, RB = new xy();
+        LT.x = OverlayStartPos.x < OverlayEndPos.x ? OverlayStartPos.x : OverlayEndPos.x;
+        LT.y = OverlayStartPos.y < OverlayEndPos.y ? OverlayStartPos.y : OverlayEndPos.y;
+        RB.x = OverlayStartPos.x > OverlayEndPos.x ? OverlayStartPos.x : OverlayEndPos.x;
+        RB.y = OverlayStartPos.y > OverlayEndPos.y ? OverlayStartPos.y : OverlayEndPos.y;
+
+
+        Overlay_Top.transform.position = gridViewArr[LT.x, LT.y];
+        Overlay_Top.transform.localScale = new Vector3(RB.x - LT.x+1f , 1f, 1f);
+        Overlay_Bottom.transform.position = gridViewArr[LT.x, RB.y+1];
+        Overlay_Bottom.transform.localScale = new Vector3(RB.x - LT.x+1f , 1f, 1f);
+        Overlay_Left.transform.position = gridViewArr[LT.x, LT.y];
+        Overlay_Left.transform.localScale = new Vector3(1f, RB.y - LT.y +1f, 1f);
+        Overlay_Right.transform.position = gridViewArr[RB.x+1, LT.y];
+        Overlay_Right.transform.localScale = new Vector3(1f, RB.y - LT.y +1f, 1f);
     }
     void CheckAnswer()
     {

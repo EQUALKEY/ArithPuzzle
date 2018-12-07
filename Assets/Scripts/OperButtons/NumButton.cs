@@ -22,6 +22,8 @@ public class NumButton : MonoBehaviour {
         if (eccs.Stack_num[thisNum] > 0)
         {
             eccs.Clear_Num();
+            eccs.Overlay.SetActive(false);
+            eccs.Direction_Button.SetActive(false);
             eccs.Num = thisNum;
             Cover.SetActive(true);
         }

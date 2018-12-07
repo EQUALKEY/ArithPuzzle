@@ -19,7 +19,7 @@ public class PlusButton : MonoBehaviour {
     {
         if (eccs.Stack_Oper[1] > 0)
         {
-            eccs.Clear_Oper();
+            eccs.Clear();
             eccs.Oper = 1;
             Palette.SetActive(true);
         }

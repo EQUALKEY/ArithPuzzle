@@ -17,7 +17,7 @@ public class DivisionButton : MonoBehaviour {
     {
         if (eccs.Stack_Oper[4] > 0)
         {
-            eccs.Clear_Oper();
+            eccs.Clear();
             eccs.Oper = 4;
             Cover.SetActive(true);
         }

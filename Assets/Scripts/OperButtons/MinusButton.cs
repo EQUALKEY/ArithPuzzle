@@ -18,7 +18,7 @@ public class MinusButton : MonoBehaviour {
     {
         if (eccs.Stack_Oper[2] > 0)
         {
-            eccs.Clear_Oper();
+            eccs.Clear();
             eccs.Oper = 2;
             Cover.SetActive(true);
         }

@@ -18,7 +18,7 @@ public class MultiplicationButton : MonoBehaviour {
     {
         if (eccs.Stack_Oper[3] > 0)
         {
-            eccs.Clear_Oper();
+            eccs.Clear();
             eccs.Oper = 3;
             Cover.SetActive(true);
         }
