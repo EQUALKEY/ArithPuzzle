@@ -6,11 +6,13 @@ public class ec : MonoBehaviour {
 
 
     // 시작할 때 Load할 정보들
+    public DB DataBasecs;
     public int[,] gridInit = new int[11, 11];
     public int[,] gridAnswer = new int[11, 11];
     public int[] Stack_Oper_Init = new int[5];
     public int[] Stack_Num_Init = new int[10];
-
+    int level;
+    int stage;
 
     public Vector2[,] gridArr;
     public Vector2[,] gridViewArr;
@@ -88,12 +90,12 @@ public class ec : MonoBehaviour {
 
 
         //////////////////////////// 정의
-
+        DataBasecs = GetComponent<DB>();
         GetData();
 
 
 
-        gridSize = 10;  // grid 사이즈 설정. 후에 stage별로 받아와야함.
+        
 
         gridcs.MakeGrid(gridSize);
         grAcs.MakeGrid(gridSize);
@@ -176,32 +178,14 @@ public class ec : MonoBehaviour {
     }
     void GetData()
     {
-        gridInit = new int[,] {
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,5,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 }
-        };
-        gridAnswer = new int[,] {
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,5,2,2,0,0,0,0 },
-            {0,0,0,1,1,1,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 },
-            {0,0,0,0,0,0,0,0,0,0 }
-        };
-        Stack_Oper_Init = new int[] { 0, 5, 1, 2, 3 };
-        Stack_Num_Init = new int[] { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
+        gridSize = PlayerPrefs.GetInt("size");
+        level = PlayerPrefs.GetInt("level");
+        stage = PlayerPrefs.GetInt("stage");
+
+        gridInit = DataBasecs.stageDB[level, stage].init;
+        gridAnswer = DataBasecs.stageDB[level, stage].answer;
+        Stack_Oper_Init = DataBasecs.stageDB[level, stage].Oper;
+        Stack_Num_Init = DataBasecs.stageDB[level, stage].Num;
     }
 
     public void Clear()
@@ -416,7 +400,7 @@ public class ec : MonoBehaviour {
                     for (int j = LT.y; j <= RB.y; j++)
                     {
                         if (gridNow[i, j] != 0)
-                            isableLeft = false;
+                            isableRight = false;
                     }
                 }
             }

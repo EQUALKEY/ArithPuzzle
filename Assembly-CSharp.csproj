@@ -61,18 +61,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ec.cs" />
-    <Compile Include="Assets\Scripts\grid.cs" />
-    <Compile Include="Assets\Scripts\gridAnswer.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\ColorButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\Cover.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\DivisionButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\MinusButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\MultiplicationButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\NumButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\Palette.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\PlusButton.cs" />
-    <Compile Include="Assets\Scripts\OperButtons\StackManager.cs" />
+    <Compile Include="Assets\Scripts\Play\DB.cs" />
+    <Compile Include="Assets\Scripts\Play\ec.cs" />
+    <Compile Include="Assets\Scripts\Play\grid.cs" />
+    <Compile Include="Assets\Scripts\Play\gridAnswer.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\ColorButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\Cover.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\DivisionButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\MinusButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\MultiplicationButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\NumButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\Palette.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\PlusButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\StackManager.cs" />
+    <Compile Include="Assets\Scripts\Title\title_ec.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/gitclone/master/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
