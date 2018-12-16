@@ -15,7 +15,7 @@ public class PlusButton : MonoBehaviour {
         eccs = EC.GetComponent<ec>();
     }
 
-    private void OnMouseUpAsButton()
+    public void ClickUpAsButton()
     {
         if (eccs.Stack_Oper[1] > 0)
         {

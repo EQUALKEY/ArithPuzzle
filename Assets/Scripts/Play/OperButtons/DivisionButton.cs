@@ -13,7 +13,7 @@ public class DivisionButton : MonoBehaviour {
         eccs = EC.GetComponent<ec>();
     }
 
-    private void OnMouseUpAsButton()
+    public void ClickUpAsButton()
     {
         if (eccs.Stack_Oper[4] > 0)
         {

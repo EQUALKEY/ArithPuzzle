@@ -8,7 +8,7 @@ public class gridAnswer : MonoBehaviour {
     private ec eccs;
 
     public GameObject LeftTop, RightBottom;
-    public GameObject BlockPref;
+    public GameObject[] BlockPref = new GameObject[3]; // 0:4*4 1:6*6 2:8*8
     public GameObject Blocks; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
     private Vector2[,] gridArrAnswer = new Vector2[11, 11];
@@ -20,6 +20,13 @@ public class gridAnswer : MonoBehaviour {
 
     public void MakeGrid(int num)
     {
+        int index;
+        if (eccs.gridSize == 4)
+            index = 0;
+        else if (eccs.gridSize == 6)
+            index = 1;
+        else
+            index = 2;
         float dis = (RightBottom.transform.position.x - LeftTop.transform.position.x) / (float)(num);
         for (int i = 0; i <= num; i++)
         {
@@ -30,7 +37,7 @@ public class gridAnswer : MonoBehaviour {
 
                 if (i != num && j != num)
                 {
-                    GameObject newblock = Instantiate(BlockPref, gridArrAnswer[i, j], new Quaternion(0f, 0f, 0f, 1f));
+                    GameObject newblock = Instantiate(BlockPref[index], gridArrAnswer[i, j], new Quaternion(0f, 0f, 0f, 1f));
                     newblock.name = "BlockAnswer(" + i + "," + j + ")";
                     newblock.transform.SetParent(Blocks.transform);
                     ChangeBlockColor(i, j, eccs.gridAnswer[i, j]);

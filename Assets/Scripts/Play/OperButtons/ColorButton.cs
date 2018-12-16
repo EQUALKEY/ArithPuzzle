@@ -15,7 +15,7 @@ public class ColorButton : MonoBehaviour {
         eccs = EC.GetComponent<ec>();
     }
 
-    private void OnMouseDown()
+    public void ClickDown()
     {
         if (this.name == "block_red")
             eccs.color = 1;

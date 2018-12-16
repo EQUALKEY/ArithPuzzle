@@ -14,7 +14,7 @@ public class MinusButton : MonoBehaviour {
         eccs = EC.GetComponent<ec>();
     }
 
-    private void OnMouseUpAsButton()
+    public void ClickUpAsButton()
     {
         if (eccs.Stack_Oper[2] > 0)
         {

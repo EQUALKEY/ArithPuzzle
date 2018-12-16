@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ec : MonoBehaviour {
 
@@ -21,9 +23,15 @@ public class ec : MonoBehaviour {
     // grid
     public GameObject gridGO;
     private grid gridcs;
-    private int gridSize;
+    public int gridSize;
     public GameObject gridAnswerGO;
     private gridAnswer grAcs;
+
+    // Pre
+    public Button Undo;
+    public int[,] gridPre = new int[11, 11];
+    public int[] Stack_Oper_Pre;
+    public int[] Stack_num_Pre;
 
     // oper
     public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷
@@ -52,10 +60,19 @@ public class ec : MonoBehaviour {
     public GameObject[] NumGO = new GameObject[10];
     public NumButton[] Numcs = new NumButton[10];
 
-    public GameObject Overlay, Overlay_Top, Overlay_Bottom,Overlay_Left,Overlay_Right;
+    public GameObject Overlay, Overlay_Top, Overlay_Bottom, Overlay_Left, Overlay_Right,Overlay_field;
     public GameObject Direction_Button, UpButton, DownButton, LeftButton, RightButton;
+    public GameObject Direction_Button_Division, UpButton_Division, DownButton_Division, LeftButton_Division, RightButton_Division;
 
     public GameObject CleraBoard;
+
+
+    // UI 연동
+    public Text Stage_text;
+    public Text remain_text;
+    public int remain;
+
+    bool isOverlay = false;
 
     struct xy // 그냥 x,y를 표시하기 위함. pair랑 같음
     {
@@ -70,7 +87,7 @@ public class ec : MonoBehaviour {
     }
     xy startPos, endPos;
     xy OverlayStartPos, OverlayEndPos;
-
+    xy OverlayLT, OverlayRB;
     private void Awake()
     {
         gridArr = new Vector2[11, 11];
@@ -95,7 +112,7 @@ public class ec : MonoBehaviour {
 
 
 
-        
+
 
         gridcs.MakeGrid(gridSize);
         grAcs.MakeGrid(gridSize);
@@ -103,10 +120,10 @@ public class ec : MonoBehaviour {
         SetOperStack();
         SetNumStack();
 
-        for(int i = 0; i <= 10; i++)
+        for (int i = 0; i <= 10; i++)
         {
-            string str ="";
-            for(int j=0; j <= 10; j++)
+            string str = "";
+            for (int j = 0; j <= 10; j++)
             {
                 str += gridViewArr[i, j].ToString();
                 str += " ";
@@ -123,10 +140,10 @@ public class ec : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        Vector2 NowCurPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-
+        Vector2 NowCurPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isOverlay)
         {
             startPos = NowPos();
             if (NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
@@ -142,11 +159,11 @@ public class ec : MonoBehaviour {
             {
                 Overlay.SetActive(false);
                 Operate();
-                
+
             }
         }
 
-        if (Input.GetKey(KeyCode.Mouse0) && NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
+        else if (Input.GetKey(KeyCode.Mouse0) && NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y && !isOverlay)
         {
             OverlayEndPos = NowPos();
             Set_Overlay();
@@ -156,7 +173,7 @@ public class ec : MonoBehaviour {
     xy NowPos() // 현재 마우스 커서가  grid 속 어느 부분에 있는지 xy형태로 반환
     {
         xy result = new xy(gridSize, gridSize);
-        Vector2 NowCurPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        Vector2 NowCurPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         if (NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y)
         {
             for (int i = 0; i < gridSize; i++)
@@ -165,7 +182,7 @@ public class ec : MonoBehaviour {
                 {
                     for (int j = 0; j < gridSize; j++)
                     {
-                        if (NowCurPos.y <= gridViewArr[0, j].y && NowCurPos.y > gridViewArr[0, j+1].y)
+                        if (NowCurPos.y <= gridViewArr[0, j].y && NowCurPos.y > gridViewArr[0, j + 1].y)
                         {
                             result = new xy(i, j);
                         }
@@ -178,14 +195,18 @@ public class ec : MonoBehaviour {
     }
     void GetData()
     {
-        gridSize = PlayerPrefs.GetInt("size");
+        DataBasecs.loadDB();
         level = PlayerPrefs.GetInt("level");
         stage = PlayerPrefs.GetInt("stage");
-
+        gridSize = DataBasecs.stageDB[level, stage].size;
         gridInit = DataBasecs.stageDB[level, stage].init;
         gridAnswer = DataBasecs.stageDB[level, stage].answer;
         Stack_Oper_Init = DataBasecs.stageDB[level, stage].Oper;
         Stack_Num_Init = DataBasecs.stageDB[level, stage].Num;
+        remain = DataBasecs.stageDB[level, stage].remain;
+
+        Stage_text.text = "STAGE " + stage.ToString();
+        remain_text.text = (remain).ToString() + "번";
     }
 
     public void Clear()
@@ -194,6 +215,8 @@ public class ec : MonoBehaviour {
         Clear_Oper();
         Overlay.SetActive(false);
         Direction_Button.SetActive(false);
+        Direction_Button_Division.SetActive(false);
+        isOverlay = false;
     }
     public void Clear_Oper()
     {
@@ -219,9 +242,12 @@ public class ec : MonoBehaviour {
     }
     void SetOperStack()
     {
+        Stack_Oper = new int[5];
         //Load 해오기
-
-        Stack_Oper = (int[])Stack_Oper_Init.Clone() ;
+        for(int i = 1; i <= 4; i++)
+        {
+            Stack_Oper[i] = Stack_Oper_Init[i];
+        }
 
         //Stack_Oper[] 값넣어주기
         for (int i = 1; i <= 4; i++)
@@ -231,8 +257,12 @@ public class ec : MonoBehaviour {
     }
     void SetNumStack()
     {
+        Stack_num = new int[10];
         //Load
-        Stack_num = (int[])Stack_Num_Init.Clone();
+        for(int i = 0; i <= 9; i++)
+        {
+            Stack_num[i] = Stack_Num_Init[i];
+        }
 
         //Stack_Num[] 값넣어주기
         for (int i = 0; i <= 9; i++)
@@ -247,6 +277,8 @@ public class ec : MonoBehaviour {
         LT.y = startPos.y < endPos.y ? startPos.y : endPos.y;
         RB.x = startPos.x > endPos.x ? startPos.x : endPos.x;
         RB.y = startPos.y > endPos.y ? startPos.y : endPos.y;
+        OverlayLT = LT;
+        OverlayRB = RB;
         if (Oper == 1) // +
         {
             bool isable = true;
@@ -262,6 +294,7 @@ public class ec : MonoBehaviour {
             }
             if (isable && cnt == Num)
             {
+                SavePreData();
                 for (int i = LT.x; i <= RB.x; i++)
                 {
                     for (int j = LT.y; j <= RB.y; j++)
@@ -269,6 +302,8 @@ public class ec : MonoBehaviour {
                         gridcs.ChangeBlockColor(i, j, color);
                     }
                 }
+
+                remain_text.text = (--remain).ToString() + "번";
                 Stack_Oper[Oper]--;
                 StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
                 Stack_num[Num]--;
@@ -296,6 +331,7 @@ public class ec : MonoBehaviour {
             }
             if (isable && cnt == Num)
             {
+                SavePreData();
                 for (int i = LT.x; i <= RB.x; i++)
                 {
                     for (int j = LT.y; j <= RB.y; j++)
@@ -303,6 +339,7 @@ public class ec : MonoBehaviour {
                         gridcs.ChangeBlockColor(i, j, 0);
                     }
                 }
+                remain_text.text = (--remain).ToString() + "번";
                 Stack_Oper[Oper]--;
                 StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
                 Stack_num[Num]--;
@@ -337,6 +374,7 @@ public class ec : MonoBehaviour {
 
             bool isableUp,isableDown,isableLeft,isableRight;
             isableUp = isableDown = isableLeft = isableRight = true;
+            Num--;
             //위로 가능한지 확인
             if (LT.y - Num * (RB.y - LT.y+1) < 0)
             {
@@ -405,10 +443,13 @@ public class ec : MonoBehaviour {
                 }
             }
 
-            UpButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f + new Vector2(0f,0.5f);
-            DownButton.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x + 1, RB.y+1]) / 2f - new Vector2(0f, 0.5f);
-            LeftButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y+1]) / 2f - new Vector2(0.5f, 0f);
-            RightButton.transform.position = (gridViewArr[RB.x+1, LT.y] + gridViewArr[RB.x + 1, RB.y+1]) / 2f + new Vector2(0.5f, 0f);
+          
+            UpButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f + new Vector2(0f,50f);
+            DownButton.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x + 1, RB.y+1]) / 2f - new Vector2(0f, 50f);
+            LeftButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y+1]) / 2f - new Vector2(50f, 0f);
+            RightButton.transform.position = (gridViewArr[RB.x+1, LT.y] + gridViewArr[RB.x + 1, RB.y+1]) / 2f + new Vector2(50f, 0f);
+            if (isableUp || isableDown || isableLeft || isableRight)
+                isOverlay = true;
 
             UpButton.SetActive(isableUp);
             DownButton.SetActive(isableDown);
@@ -420,6 +461,81 @@ public class ec : MonoBehaviour {
         else if(Oper ==4) // ÷
         {
             Overlay.SetActive(true);
+            Direction_Button_Division.SetActive(true);
+            bool isable = true;
+            for (int i = LT.x; i <= RB.x; i++)
+            {
+                for (int j = LT.y; j <= RB.y; j++)
+                {
+                    if (gridNow[i, j] == 0)
+                        isable = false;
+                }
+            }
+            if (!isable)
+            {
+                Overlay.SetActive(false);
+                Direction_Button_Division.SetActive(false);
+                goto end;
+            }
+            
+            bool isVertical, isHorizental;
+            isVertical = isHorizental = true;
+
+            if ((RB.x - LT.x + 1) % Num != 0)
+            {
+                isHorizental = false;
+            }
+            else {
+                for (int j = LT.y; j <= RB.y; j++)
+                {
+                    for (int k = 0; k < ((RB.x - LT.x + 1) / Num); k++)
+                    {
+                        for (int i = LT.x + ((RB.x - LT.x + 1) / Num) + k; i <= RB.x; i += ((RB.x - LT.x + 1) / Num))
+                        {
+                            if (gridNow[i, j] != gridNow[LT.x + k, j])
+                            {
+                                isHorizental = false;
+                            }
+
+                        }
+                    }
+                }
+            }
+            if ((RB.y - LT.y + 1) % Num != 0)
+            {
+                isVertical = false;
+            }
+            else
+            {
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int k = 0; k < ((RB.y - LT.y + 1) / Num); k++)
+                    {
+                        for (int j = LT.y + ((RB.y - LT.y + 1) / Num) + k; j <= RB.y; j += ((RB.y - LT.y + 1) / Num))
+                        {
+                            if (gridNow[i, j] != gridNow[i, LT.y+k])
+                            {
+                                isVertical = false;
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            DownButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f - new Vector2(0f, 50f);
+            UpButton_Division.transform.position = (gridViewArr[LT.x, RB.y + 1] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f + new Vector2(0f, 50f);
+            RightButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y + 1]) / 2f + new Vector2(50f, 0f);
+            LeftButton_Division.transform.position = (gridViewArr[RB.x + 1, LT.y] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f - new Vector2(50f, 0f);
+            if (isVertical || isHorizental)
+                isOverlay = true;
+
+            UpButton_Division.SetActive(isVertical);
+            DownButton_Division.SetActive(isVertical);
+            LeftButton_Division.SetActive(isHorizental);
+            RightButton_Division.SetActive(isHorizental);
+
+            end:;
         }
         else // ?
         {
@@ -427,6 +543,187 @@ public class ec : MonoBehaviour {
         }
         CheckAnswer();
     }
+    public void Multiple_Up()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x; i <= OverlayRB.x; i++)
+        {
+            for (int k = 0; k < (OverlayRB.y - OverlayLT.y + 1); k++)
+            {
+                for (int a = 0; a < Num; a++)
+                {
+
+                    int j = OverlayLT.y - 1 - k -(OverlayRB.y-OverlayLT.y+1) * a;
+                    gridcs.ChangeBlockColor(i, j, gridNow[i, OverlayRB.y-k]);
+                }
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[++Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button.SetActive(false);
+    }
+    public void Multiple_Down()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x; i <= OverlayRB.x; i++)
+        {
+            for (int k = 0; k < (OverlayRB.y - OverlayLT.y + 1); k++)
+            {
+                for (int a = 0; a < Num; a++)
+                {
+
+                    int j = OverlayRB.y + 1 + k + (OverlayRB.y - OverlayLT.y + 1) * a;
+                    gridcs.ChangeBlockColor(i, j, gridNow[i, OverlayLT.y + k]);
+                }
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[++Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button.SetActive(false);
+    }
+    public void Multiple_Left()
+    {
+        SavePreData();
+        for (int j = OverlayLT.y; j <= OverlayRB.y; j++)
+        {
+            for (int k = 0; k < (OverlayRB.x - OverlayLT.x + 1); k++)
+            {
+                for (int a = 0; a < Num; a++)
+                {
+
+                    int i = OverlayLT.x - 1 - k - (OverlayRB.x - OverlayLT.x + 1) * a;
+                    gridcs.ChangeBlockColor(i, j, gridNow[OverlayRB.x-k, j]);
+                }
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[++Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button.SetActive(false);
+    }
+    public void Multiple_Right()
+    {
+        SavePreData();
+        for (int j = OverlayLT.y; j <= OverlayRB.y; j++)
+        {
+            for (int k = 0; k < (OverlayRB.x - OverlayLT.x + 1); k++)
+            {
+                for (int a = 0; a < Num; a++)
+                {
+
+                    int i = OverlayRB.x + 1 + k + (OverlayRB.x - OverlayLT.x + 1) * a;
+                    gridcs.ChangeBlockColor(i, j, gridNow[OverlayLT.x + k, j]);
+                }
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[++Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button.SetActive(false);
+    }
+    public void Division_Up()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x; i <= OverlayRB.x ; i++)
+        {
+            for (int j = OverlayLT.y+(OverlayRB.y - OverlayLT.y+1)/Num; j <= OverlayRB.y; j++)
+            {
+                gridcs.ChangeBlockColor(i, j, 0);
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button_Division.SetActive(false);
+    }
+    public void Division_Down()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x; i <= OverlayRB.x; i++)
+        {
+            for (int j = OverlayLT.y ; j <= OverlayRB.y- (OverlayRB.y - OverlayLT.y + 1) / Num; j++)
+            {
+                gridcs.ChangeBlockColor(i, j, 0);
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button_Division.SetActive(false);
+    }
+    public void Division_Left()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x + (OverlayRB.x - OverlayLT.x + 1) / Num; i <= OverlayRB.x; i++)
+        {
+            for (int j = OverlayLT.y ; j <= OverlayRB.y; j++)
+            {
+                gridcs.ChangeBlockColor(i, j, 0);
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button_Division.SetActive(false);
+    }
+    public void Division_Right()
+    {
+        SavePreData();
+        for (int i = OverlayLT.x ; i <= OverlayRB.x - (OverlayRB.x - OverlayLT.x + 1) / Num; i++)
+        {
+            for (int j = OverlayLT.y; j <= OverlayRB.y; j++)
+            {
+                gridcs.ChangeBlockColor(i, j, 0);
+            }
+        }
+        remain_text.text = (--remain).ToString() + "번";
+        Stack_Oper[Oper]--;
+        StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
+        Stack_num[Num]--;
+        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        Clear_Oper();
+        Clear_Num();
+        Overlay.SetActive(false);
+        Direction_Button_Division.SetActive(false);
+    }
+
     void PopDisable()
     {
 
@@ -440,14 +737,16 @@ public class ec : MonoBehaviour {
         RB.y = OverlayStartPos.y > OverlayEndPos.y ? OverlayStartPos.y : OverlayEndPos.y;
 
 
-        Overlay_Top.transform.position = gridViewArr[LT.x, LT.y];
+        Overlay_Top.transform.position = (gridViewArr[LT.x, LT.y]+ gridViewArr[RB.x+1, LT.y])/2;
         Overlay_Top.transform.localScale = new Vector3(RB.x - LT.x+1f , 1f, 1f);
-        Overlay_Bottom.transform.position = gridViewArr[LT.x, RB.y+1];
+        Overlay_Bottom.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x+1, RB.y+1])/2;
         Overlay_Bottom.transform.localScale = new Vector3(RB.x - LT.x+1f , 1f, 1f);
-        Overlay_Left.transform.position = gridViewArr[LT.x, LT.y];
+        Overlay_Left.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x,RB.y+1])/2;
         Overlay_Left.transform.localScale = new Vector3(1f, RB.y - LT.y +1f, 1f);
-        Overlay_Right.transform.position = gridViewArr[RB.x+1, LT.y];
+        Overlay_Right.transform.position = (gridViewArr[RB.x+1, LT.y]+gridViewArr[RB.x+1,RB.y+1])/2;
         Overlay_Right.transform.localScale = new Vector3(1f, RB.y - LT.y +1f, 1f);
+        Overlay_field.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, RB.y + 1]) / 2;
+        Overlay_field.transform.localScale = new Vector3(RB.x - LT.x + 1f, RB.y - LT.y + 1f, 1f);
     }
     void CheckAnswer()
     {
@@ -464,5 +763,38 @@ public class ec : MonoBehaviour {
         {
             CleraBoard.SetActive(true);
         }
+    }
+    public void SavePreData()
+    {
+        Undo.interactable = true;
+        gridPre = (int[,])(gridNow.Clone());
+        Stack_num_Pre = (int[])(Stack_num.Clone());
+        Stack_Oper_Pre = (int[])(Stack_Oper.Clone());
+    }
+    public void LoadPreData()
+    {
+        Undo.interactable = false;
+        for(int i = 0; i < gridSize; i++)
+        {
+            for(int j = 0; j < gridSize; j++)
+            {
+                gridcs.ChangeBlockColor(i, j, gridPre[i, j]);
+            }
+        }
+        Stack_num = (int[])(Stack_num_Pre.Clone());
+        for(int i=1;i<10;i++)
+            StackOfNum[i].GetComponent<StackManager>().SetStack(Stack_num[i]);
+        Stack_Oper = (int[])(Stack_Oper_Pre.Clone());
+        for (int i = 1; i < 5; i++)
+            StackOfOper[i].GetComponent<StackManager>().SetStack(Stack_Oper[i]);
+        remain_text.text = (++remain).ToString()+"번";
+    }
+    public void GotoTitle()
+    {
+        SceneManager.LoadScene("Title");
+    }
+    public void Reset()
+    {
+        SceneManager.LoadScene("Play");
     }
 }

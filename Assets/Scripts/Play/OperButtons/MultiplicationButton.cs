@@ -14,7 +14,7 @@ public class MultiplicationButton : MonoBehaviour {
         eccs = EC.GetComponent<ec>();
     }
 
-    private void OnMouseUpAsButton()
+    public void ClickUpAsButton()
     {
         if (eccs.Stack_Oper[3] > 0)
         {

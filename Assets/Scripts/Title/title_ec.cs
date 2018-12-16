@@ -21,7 +21,6 @@ public class title_ec : MonoBehaviour {
         string[] newstr = str.Split('-');
         PlayerPrefs.SetInt("level", int.Parse(newstr[0]));
         PlayerPrefs.SetInt("stage", int.Parse(newstr[1]));
-        PlayerPrefs.SetInt("size", int.Parse(newstr[2]));
         SceneManager.LoadScene("play");
     }
 }

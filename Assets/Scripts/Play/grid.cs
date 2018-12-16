@@ -1,14 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class grid : MonoBehaviour {
 
     public GameObject EC;
     private ec eccs;
 
-    public GameObject LeftTop,RightBottom;
-    public GameObject LeftTopView,RightBottomView;
+    public GameObject[] LeftTop = new GameObject[3];  // 0 : 4*4 1: 6*6 2: 8*8
+    public GameObject[] RightBottom = new GameObject[3];
+    public GameObject[] LeftTopView = new GameObject[3];
+    public GameObject[] RightBottomView= new GameObject[3];
+
+    public GameObject[] book = new GameObject[3];
+
     public GameObject BlockPref;
     public GameObject Blocks; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
@@ -27,15 +33,28 @@ public class grid : MonoBehaviour {
 	}
     public void MakeGrid(int num)
     {
-        float dis = (RightBottom.transform.position.x - LeftTop.transform.position.x)/(float)(num);
-        float disView = (RightBottomView.transform.position.x - LeftTopView.transform.position.x) / (float)(num);
+        int index;
+        if (eccs.gridSize == 4)
+            index = 0;
+        else if (eccs.gridSize == 6)
+            index = 1;
+        else
+            index = 2;
+
+        book[index].SetActive(true);
+        float dis_x = (RightBottom[index].transform.position.x - LeftTop[index].transform.position.x) / (num - 1);
+        float dis_y = (LeftTop[index].transform.position.y - RightBottom[index].transform.position.y) / (num - 1);
+        float disView_x = (RightBottomView[index].transform.position.x - LeftTopView[index].transform.position.x) / (num - 1);
+        float disView_y = (LeftTopView[index].transform.position.y - RightBottomView[index].transform.position.y) / (num - 1);
+        
         for (int i = 0; i <= num; i++)
         {
             for(int j = 0; j <= num; j++)
             {
 
-                eccs.gridArr[i, j] = new Vector2(LeftTop.transform.position.x + (dis * i), LeftTop.transform.position.y - (dis * j));
-                eccs.gridViewArr[i,j]= new Vector2(LeftTopView.transform.position.x + (disView * i), LeftTopView.transform.position.y - (disView * j));
+                eccs.gridArr[i, j] = new Vector2(LeftTop[index].transform.position.x + (dis_x * i), LeftTop[index].transform.position.y - (dis_y * j));
+                eccs.gridViewArr[i,j]= new Vector2(LeftTopView[index].transform.position.x + (disView_x * i), LeftTopView[index].transform.position.y - (disView_y * j));
+
 
                 if (i != num && j != num)
                 {

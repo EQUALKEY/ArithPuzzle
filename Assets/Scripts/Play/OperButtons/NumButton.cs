@@ -17,7 +17,7 @@ public class NumButton : MonoBehaviour {
         thisNum = this.name[0]-'0';
     }
 
-    private void OnMouseUpAsButton()
+    public void ClickUpAsButton()
     {
         if (eccs.Stack_num[thisNum] > 0)
         {
