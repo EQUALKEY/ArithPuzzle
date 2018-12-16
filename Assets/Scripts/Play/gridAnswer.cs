@@ -39,7 +39,8 @@ public class gridAnswer : MonoBehaviour {
                 {
                     GameObject newblock = Instantiate(BlockPref[index], gridArrAnswer[i, j], new Quaternion(0f, 0f, 0f, 1f));
                     newblock.name = "BlockAnswer(" + i + "," + j + ")";
-                    newblock.transform.SetParent(Blocks.transform);
+                    newblock.transform.SetParent(Blocks.transform,false);
+                    newblock.transform.position = gridArrAnswer[i, j];
                     ChangeBlockColor(i, j, eccs.gridAnswer[i, j]);
                 }
             }

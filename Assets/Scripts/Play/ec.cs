@@ -71,6 +71,7 @@ public class ec : MonoBehaviour {
     public Text Stage_text;
     public Text remain_text;
     public int remain;
+    public Text Clear_text;
 
     bool isOverlay = false;
 
@@ -216,6 +217,7 @@ public class ec : MonoBehaviour {
         Overlay.SetActive(false);
         Direction_Button.SetActive(false);
         Direction_Button_Division.SetActive(false);
+        Clear_text.text = level + " - " + stage;
         isOverlay = false;
     }
     public void Clear_Oper()
@@ -795,6 +797,11 @@ public class ec : MonoBehaviour {
     }
     public void Reset()
     {
+        SceneManager.LoadScene("Play");
+    }
+    public void GotoNext()
+    {
+        PlayerPrefs.SetInt("stage", stage + 1);
         SceneManager.LoadScene("Play");
     }
 }

@@ -14,6 +14,7 @@ public class grid : MonoBehaviour {
     public GameObject[] RightBottomView= new GameObject[3];
 
     public GameObject[] book = new GameObject[3];
+    public GameObject[] AnswerGrid = new GameObject[3];
 
     public GameObject BlockPref;
     public GameObject Blocks; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
@@ -42,6 +43,7 @@ public class grid : MonoBehaviour {
             index = 2;
 
         book[index].SetActive(true);
+        AnswerGrid[index].SetActive(true);
         float dis_x = (RightBottom[index].transform.position.x - LeftTop[index].transform.position.x) / (num - 1);
         float dis_y = (LeftTop[index].transform.position.y - RightBottom[index].transform.position.y) / (num - 1);
         float disView_x = (RightBottomView[index].transform.position.x - LeftTopView[index].transform.position.x) / (num - 1);
@@ -60,7 +62,8 @@ public class grid : MonoBehaviour {
                 {
                     GameObject newblock = Instantiate(BlockPref, eccs.gridArr[i, j], new Quaternion(0f, 0f, 0f, 1f));
                     newblock.name = "Block(" + i + "," + j + ")";
-                    newblock.transform.SetParent(Blocks.transform);
+                    newblock.transform.SetParent(Blocks.transform,false);
+                    newblock.transform.position = eccs.gridArr[i, j];
                     ChangeBlockColor(i, j, eccs.gridInit[i, j]);
                     eccs.gridNow[i, j] = eccs.gridInit[i, j];
                 }
