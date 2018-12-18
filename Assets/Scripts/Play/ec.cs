@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class ec : MonoBehaviour {
 
+    // 상수값들
+    const float width = 2208;
+    const float height = 1242;
 
+    float ratio;
     // 시작할 때 Load할 정보들
     public DB DataBasecs;
     public int[,] gridInit = new int[11, 11];
@@ -93,6 +97,8 @@ public class ec : MonoBehaviour {
     xy OverlayLT, OverlayRB;
     private void Awake()
     {
+        ratio = Screen.width / width;
+
         gridArr = new Vector2[11, 11];
         gridViewArr = new Vector2[11, 11];
 
@@ -123,6 +129,7 @@ public class ec : MonoBehaviour {
         SetOperStack();
         SetNumStack();
         OffInteractable_Num();
+        SetOperButton();
 
         for (int i = 0; i <= 10; i++)
         {
@@ -146,7 +153,7 @@ public class ec : MonoBehaviour {
     {
 
         Vector2 NowCurPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
+        
 
         if (Input.GetKeyDown(KeyCode.Mouse0) )
         {
@@ -189,8 +196,15 @@ public class ec : MonoBehaviour {
 
         else if (Input.GetKey(KeyCode.Mouse0) && NowCurPos.x > gridViewArr[0, 0].x && NowCurPos.x < gridViewArr[gridSize, gridSize].x && NowCurPos.y < gridViewArr[0, 0].y && NowCurPos.y > gridViewArr[gridSize, gridSize].y && !isOverlay)
         {
+            
             OverlayEndPos = NowPos();
+            Overlay.SetActive(true);
             Set_Overlay();
+        }
+        else if (Input.GetKey(KeyCode.Mouse0) & !isOverlay)
+        {
+            
+            Overlay.SetActive(false);
         }
 
     }
@@ -255,7 +269,7 @@ public class ec : MonoBehaviour {
     }
     public void Clear_Num()
     {
-        Num = -1;
+        Num = 999;
         for(int i = 0; i < 10; i++)
         {
             Numcs[i].Initialize();
@@ -273,7 +287,9 @@ public class ec : MonoBehaviour {
         Clear_Num();
         Overlay.SetActive(false);
         Direction_Button.SetActive(false);
+        Direction_Button_Division.SetActive(false);
         OffInteractable_Num();
+        SetOperButton();
     }
     public void StageEnd()
     {
@@ -472,10 +488,10 @@ public class ec : MonoBehaviour {
             }
 
           
-            UpButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f + new Vector2(0f,50f);
-            DownButton.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x + 1, RB.y+1]) / 2f - new Vector2(0f, 50f);
-            LeftButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y+1]) / 2f - new Vector2(50f, 0f);
-            RightButton.transform.position = (gridViewArr[RB.x+1, LT.y] + gridViewArr[RB.x + 1, RB.y+1]) / 2f + new Vector2(50f, 0f);
+            UpButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f + new Vector2(0f,50f) * ratio;
+            DownButton.transform.position = (gridViewArr[LT.x, RB.y+1] + gridViewArr[RB.x + 1, RB.y+1]) / 2f - new Vector2(0f, 50f) * ratio;
+            LeftButton.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y+1]) / 2f - new Vector2(50f, 0f) * ratio;
+            RightButton.transform.position = (gridViewArr[RB.x+1, LT.y] + gridViewArr[RB.x + 1, RB.y+1]) / 2f + new Vector2(50f, 0f) * ratio;
             if (isableUp || isableDown || isableLeft || isableRight)
                 isOverlay = true;
 
@@ -551,10 +567,10 @@ public class ec : MonoBehaviour {
                 }
             }
 
-            DownButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f - new Vector2(0f, 50f);
-            UpButton_Division.transform.position = (gridViewArr[LT.x, RB.y + 1] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f + new Vector2(0f, 50f);
-            RightButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y + 1]) / 2f + new Vector2(50f, 0f);
-            LeftButton_Division.transform.position = (gridViewArr[RB.x + 1, LT.y] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f - new Vector2(50f, 0f);
+            DownButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[RB.x + 1, LT.y]) / 2f - new Vector2(0f, 50f)*ratio;
+            UpButton_Division.transform.position = (gridViewArr[LT.x, RB.y + 1] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f + new Vector2(0f, 50f)*ratio;
+            RightButton_Division.transform.position = (gridViewArr[LT.x, LT.y] + gridViewArr[LT.x, RB.y + 1]) / 2f + new Vector2(50f, 0f)*ratio;
+            LeftButton_Division.transform.position = (gridViewArr[RB.x + 1, LT.y] + gridViewArr[RB.x + 1, RB.y + 1]) / 2f - new Vector2(50f, 0f)*ratio;
             if (isVertical || isHorizental)
                 isOverlay = true;
 
@@ -727,6 +743,17 @@ public class ec : MonoBehaviour {
             CleraBoard.SetActive(true);
         }
     }
+    public void SetOperButton()
+    {
+        if (Stack_Oper[1] == 0)
+            PlusButtonGO.GetComponent<Button>().interactable = false;
+        if (Stack_Oper[2] == 0)
+            MinusButtonGO.GetComponent<Button>().interactable = false;
+        if (Stack_Oper[3] == 0)
+            MultiplicationButtonGO.GetComponent<Button>().interactable = false;
+        if (Stack_Oper[4] == 0)
+            DivisionButtonGO.GetComponent<Button>().interactable = false;
+    }
     public void OffInteractable_Num()
     {
         for(int i = 1; i < 10; i++)
@@ -738,7 +765,8 @@ public class ec : MonoBehaviour {
     {
         for (int i = 1; i < 10; i++)
         {
-            NumGO[i].GetComponent<Button>().interactable = true;
+            if(Stack_num[i]!=0)
+                NumGO[i].GetComponent<Button>().interactable = true;
         }
     }
     public void SavePreData()

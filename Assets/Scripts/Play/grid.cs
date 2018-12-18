@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class grid : MonoBehaviour {
 
+    // 상수값들
+    const float width = 2208;
+    const float height = 1242;
+
     public GameObject EC;
     private ec eccs;
 
@@ -56,8 +60,8 @@ public class grid : MonoBehaviour {
 
                 eccs.gridArr[i, j] = new Vector2(LeftTop[index].transform.position.x + (dis_x * i), LeftTop[index].transform.position.y - (dis_y * j));
                 eccs.gridViewArr[i,j]= new Vector2(LeftTopView[index].transform.position.x + (disView_x * i), LeftTopView[index].transform.position.y - (disView_y * j));
-
-
+                eccs.gridViewArr[i, j].x *= Screen.width / width;
+                eccs.gridViewArr[i, j].y = (eccs.gridViewArr[i, j].y - Screen.height / 2f + height/2f ) * (Screen.height / height);
                 if (i != num && j != num)
                 {
                     GameObject newblock = Instantiate(BlockPref, eccs.gridArr[i, j], new Quaternion(0f, 0f, 0f, 1f));
