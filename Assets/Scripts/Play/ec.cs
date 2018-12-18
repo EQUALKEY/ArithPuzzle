@@ -290,6 +290,7 @@ public class ec : MonoBehaviour {
         Direction_Button_Division.SetActive(false);
         OffInteractable_Num();
         SetOperButton();
+        CheckAnswer();
     }
     public void StageEnd()
     {
@@ -585,7 +586,6 @@ public class ec : MonoBehaviour {
         {
 
         }
-        CheckAnswer();
     }
     public void Multiple_Up()
     {
@@ -602,6 +602,8 @@ public class ec : MonoBehaviour {
                 }
             }
         }
+
+        FinishOperate();
     }
     public void Multiple_Down()
     {
