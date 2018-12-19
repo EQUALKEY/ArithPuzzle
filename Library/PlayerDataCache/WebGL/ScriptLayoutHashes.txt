@@ -5,6 +5,7 @@ SceneListBegin?
 Assets/Scenes/Title.unity
 Assets/Scenes/play.unity
 SceneListEnd?
+cc9f485a7940cfb628d5d673e90402a6 Assembly-CSharp.dll:.MapEditorEC
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 01aa15e337e3a9c62f15153dfac6d589 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
 7f05815dd10a4a81b3f21292d6ee9fc6 Assembly-CSharp.dll:.grid
@@ -118,14 +119,19 @@ ad9173d3a69d99153f38ed4b62226129 UnityEngine.Networking.dll:UnityEngine.Networki
 5887ef1bc706b22b773d253fd443ceef UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.StackManager
+132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.ME_DivisionButton
 303ad70ce203ad874efe2965d0fbcff9 Unity.Analytics.Tracker.dll:UnityEngine.Analytics.AnalyticsEventTracker
 7fb9de8dcf73854b6b328eca1f7a6e6d Unity.Analytics.Tracker.dll:UnityEngine.Analytics.AnalyticsTracker
 94017dcc9f00fe671ea7dc427b4da011 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
+9bba41384ae413383b7bb0bac18c48d7 Assembly-CSharp.dll:.ME_ColorButton
 b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
+132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.ME_MultiplicationButton
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.DB
 71bb6a6b6c8f052f948db64c7dd3ca4f Unity.Analytics.Editor.dll:UnityEditor.Analytics.AnalyticsEventTrackerEditor
 71bb6a6b6c8f052f948db64c7dd3ca4f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
+132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.ME_MinusButton
 4fd8bf02e3089425d3502e26c44ba31a Unity.TextMeshPro.dll:TMPro.TextContainer
+d6544be5d077847f9a7007f3759854b6 Assembly-CSharp.dll:.ME_Palette
 e6ae40841db498b6e673877ac45ad208 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 1dcb82730d983b77cec736c6ef19f814 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -165,6 +171,9 @@ d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.Spa
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.DivisionButton
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.title_ec
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
+9d8da145ad45c54b94d39cb56c1532a7 Assembly-CSharp.dll:.ME_PlusButton
+132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.ME_NumButton
+df6f03178605c5e7fd516cd69bc529bb Assembly-CSharp.dll:.ME_grid
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.NumButton
 0964c0a7f0dc0c0a3ac5b45df2e02156 Assembly-CSharp.dll:.ec
 c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro

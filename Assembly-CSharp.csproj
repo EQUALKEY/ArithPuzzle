@@ -61,6 +61,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\MapEditor\MapEditorEC.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_ColorButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_DivisionButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_grid.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_MinusButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_MultiplicationButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_NumButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_Palette.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_PlusButton.cs" />
     <Compile Include="Assets\Scripts\Play\DB.cs" />
     <Compile Include="Assets\Scripts\Play\ec.cs" />
     <Compile Include="Assets\Scripts\Play\grid.cs" />
@@ -75,6 +84,8 @@
     <Compile Include="Assets\Scripts\Play\OperButtons\PlusButton.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\StackManager.cs" />
     <Compile Include="Assets\Scripts\Title\title_ec.cs" />
+    <None Include="Assets\test.txt" />
+    <None Include="Assets\123.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/John/Unity/ArithPuzzle/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

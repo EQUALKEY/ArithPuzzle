@@ -250,6 +250,7 @@ public class ec : MonoBehaviour {
 
     public void Clear()
     {
+        OffInteractable_Num();
         Clear_Num();
         Clear_Oper();
         Overlay.SetActive(false);
