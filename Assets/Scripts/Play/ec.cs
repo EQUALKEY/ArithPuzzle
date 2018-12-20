@@ -15,7 +15,7 @@ public class ec : MonoBehaviour {
     public DB DataBasecs;
     public int[,] gridInit = new int[11, 11];
     public int[,] gridAnswer = new int[11, 11];
-    public int[] Stack_Oper_Init = new int[5];
+    public int[] Stack_Oper_Init = new int[7];
     public int[] Stack_Num_Init = new int[10];
     int level;
     int stage;
@@ -38,14 +38,18 @@ public class ec : MonoBehaviour {
     public int[] Stack_num_Pre;
 
     // oper
-    public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷
+    public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷, 5: change_color, 6: erase_line
     public int color; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
     public int Num;
 
+    public int color_from;
+    public int color_to;
+    public int is_Vertical; //0: null , 1:vertical 2: horizental
+
     //?   public int[] OperStack = new int[6]; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
-    public int[] Stack_Oper; // 0: null, 1 : + , 2 : - , 3: ×, 4 : ÷
-    public GameObject[] StackOfOper = new GameObject[5];
+    public int[] Stack_Oper; // 0: null, 1 : + , 2 : - , 3: ×, 4 : ÷, 5: change_color, 6: erase_line
+    public GameObject[] StackOfOper = new GameObject[7];
     public int[] Stack_num;
     public GameObject[] StackOfNum = new GameObject[10];
 
@@ -60,6 +64,9 @@ public class ec : MonoBehaviour {
     private MultiplicationButton MPBcs;
     public GameObject DivisionButtonGO;
     private DivisionButton DBcs;
+    public GameObject ChangeColorButtonGO;
+    public GameObject EraseLineButtonGO;
+
 
     public GameObject[] NumGO = new GameObject[10];
     public NumButton[] Numcs = new NumButton[10];
@@ -131,16 +138,7 @@ public class ec : MonoBehaviour {
         OffInteractable_Num();
         SetOperButton();
 
-        for (int i = 0; i <= 10; i++)
-        {
-            string str = "";
-            for (int j = 0; j <= 10; j++)
-            {
-                str += gridViewArr[i, j].ToString();
-                str += " ";
-            }
-            Debug.Log(str);
-        }
+        
     }
 
     // Use this for initialization
@@ -238,10 +236,10 @@ public class ec : MonoBehaviour {
         level = PlayerPrefs.GetInt("level");
         stage = PlayerPrefs.GetInt("stage");
         gridSize = DataBasecs.stageDB[level, stage].size;
-        gridInit = DataBasecs.stageDB[level, stage].init;
-        gridAnswer = DataBasecs.stageDB[level, stage].answer;
-        Stack_Oper_Init = DataBasecs.stageDB[level, stage].Oper;
-        Stack_Num_Init = DataBasecs.stageDB[level, stage].Num;
+        gridInit = (int[,])DataBasecs.stageDB[level, stage].init.Clone();
+        gridAnswer = (int[,])DataBasecs.stageDB[level, stage].answer.Clone();
+        Stack_Oper_Init = (int[])DataBasecs.stageDB[level, stage].Oper.Clone();
+        Stack_Num_Init = (int[])DataBasecs.stageDB[level, stage].Num.Clone();
         remain = DataBasecs.stageDB[level, stage].remain;
 
         Stage_text.text = "STAGE " + stage.ToString();
@@ -263,10 +261,17 @@ public class ec : MonoBehaviour {
     {
         Oper = 0;
         color = 0;
+        color_from = 0;
+        color_to = 0;
+
         PBcs.Initialize();
         MBcs.Initialize();
         MPBcs.Initialize();
         DBcs.Initialize();
+        ChangeColorButtonGO.GetComponent<ChangeColor>().Initialize();
+        EraseLineButtonGO.GetComponent<EraseLine>().Initialize();
+
+
     }
     public void Clear_Num()
     {
@@ -282,8 +287,11 @@ public class ec : MonoBehaviour {
         remain_text.text = (--remain).ToString() + "번";
         Stack_Oper[Oper]--;
         StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
-        Stack_num[Num]--;
-        StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        if (Oper != 5 && Oper != 6)
+        {
+            Stack_num[Num]--;
+            StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);
+        }
         Clear_Oper();
         Clear_Num();
         Overlay.SetActive(false);
@@ -299,15 +307,15 @@ public class ec : MonoBehaviour {
     }
     void SetOperStack()
     {
-        Stack_Oper = new int[5];
+        Stack_Oper = new int[7];
         //Load 해오기
-        for(int i = 1; i <= 4; i++)
+        for(int i = 1; i <= 6; i++)
         {
             Stack_Oper[i] = Stack_Oper_Init[i];
         }
 
         //Stack_Oper[] 값넣어주기
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 6; i++)
         {
             StackOfOper[i].GetComponent<StackManager>().SetStack(Stack_Oper[i]);
         }
@@ -350,7 +358,7 @@ public class ec : MonoBehaviour {
                         isable = false;
                 }
             }
-            if (isable && cnt == Num)
+            if (isable && cnt == Num && remain>0)
             {
                 SavePreData();
                 for (int i = LT.x; i <= RB.x; i++)
@@ -381,7 +389,7 @@ public class ec : MonoBehaviour {
                         isable = false;
                 }
             }
-            if (isable && cnt == Num)
+            if (isable && cnt == Num && remain > 0)
             {
                 SavePreData();
                 for (int i = LT.x; i <= RB.x; i++)
@@ -497,10 +505,10 @@ public class ec : MonoBehaviour {
             if (isableUp || isableDown || isableLeft || isableRight)
                 isOverlay = true;
 
-            UpButton.SetActive(isableUp);
-            DownButton.SetActive(isableDown);
-            LeftButton.SetActive(isableLeft);
-            RightButton.SetActive(isableRight);
+            UpButton.SetActive(isableUp& (remain > 0));
+            DownButton.SetActive(isableDown & (remain > 0));
+            LeftButton.SetActive(isableLeft & (remain > 0));
+            RightButton.SetActive(isableRight & (remain > 0));
 
             end:;
         }
@@ -576,12 +584,58 @@ public class ec : MonoBehaviour {
             if (isVertical || isHorizental)
                 isOverlay = true;
 
-            UpButton_Division.SetActive(isVertical);
-            DownButton_Division.SetActive(isVertical);
-            LeftButton_Division.SetActive(isHorizental);
-            RightButton_Division.SetActive(isHorizental);
+            UpButton_Division.SetActive(isVertical & (remain > 0));
+            DownButton_Division.SetActive(isVertical & (remain > 0));
+            LeftButton_Division.SetActive(isHorizental & (remain > 0));
+            RightButton_Division.SetActive(isHorizental & (remain > 0));
 
             end:;
+        }
+        else if(Oper == 5) // change_color
+        {
+            if (color_from != 0 && color_to != 0 && remain > 0)
+            {
+
+                SavePreData();
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int j = LT.y; j <= RB.y; j++)
+                    {
+                        if (gridNow[i, j] == color_from)
+                            gridcs.ChangeBlockColor(i, j, color_to);
+                    }
+                }
+
+                FinishOperate();
+            }
+        }
+        else if(Oper == 6) // erase_line
+        {
+            if (remain > 0)
+            {
+                if (is_Vertical == 1)
+                {
+                    SavePreData();
+                    int i = LT.x;
+                    for (int j = 0; j < gridSize; j++)
+                    {
+                        gridcs.ChangeBlockColor(i, j, 0);
+                    }
+
+                    FinishOperate();
+                }
+                else if (is_Vertical == 2)
+                {
+                    SavePreData();
+                    int j = LT.y;
+                    for (int i = 0; i < gridSize; i++)
+                    {
+                        gridcs.ChangeBlockColor(i, j, 0);
+                    }
+
+                    FinishOperate();
+                }
+            }
         }
         else // ?
         {
@@ -750,12 +804,28 @@ public class ec : MonoBehaviour {
     {
         if (Stack_Oper[1] == 0)
             PlusButtonGO.GetComponent<Button>().interactable = false;
+        else
+            PlusButtonGO.GetComponent<Button>().interactable = true;
         if (Stack_Oper[2] == 0)
             MinusButtonGO.GetComponent<Button>().interactable = false;
+        else
+            MinusButtonGO.GetComponent<Button>().interactable = true;
         if (Stack_Oper[3] == 0)
             MultiplicationButtonGO.GetComponent<Button>().interactable = false;
+        else
+            MultiplicationButtonGO.GetComponent<Button>().interactable = true;
         if (Stack_Oper[4] == 0)
             DivisionButtonGO.GetComponent<Button>().interactable = false;
+        else
+            DivisionButtonGO.GetComponent<Button>().interactable = true;
+        if (Stack_Oper[5] == 0)
+            ChangeColorButtonGO.GetComponent<Button>().interactable = false;
+        else
+            ChangeColorButtonGO.GetComponent<Button>().interactable = true;
+        if (Stack_Oper[6] == 0)
+            EraseLineButtonGO.GetComponent<Button>().interactable = false;
+        else
+            EraseLineButtonGO.GetComponent<Button>().interactable = true;
     }
     public void OffInteractable_Num()
     {
@@ -793,8 +863,9 @@ public class ec : MonoBehaviour {
         for(int i=1;i<10;i++)
             StackOfNum[i].GetComponent<StackManager>().SetStack(Stack_num[i]);
         Stack_Oper = (int[])(Stack_Oper_Pre.Clone());
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 7; i++)
             StackOfOper[i].GetComponent<StackManager>().SetStack(Stack_Oper[i]);
+        SetOperButton();
         remain_text.text = (++remain).ToString()+"번";
     }
     public void GotoTitle()

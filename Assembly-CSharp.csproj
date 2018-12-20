@@ -62,8 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\MapEditor\MapEditorEC.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_ChangeColor.cs" />
     <Compile Include="Assets\Scripts\MapEditor\ME_ColorButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_ColorButton_From.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_ColorButton_To.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_Cover.cs" />
     <Compile Include="Assets\Scripts\MapEditor\ME_DivisionButton.cs" />
+    <Compile Include="Assets\Scripts\MapEditor\ME_EraseLine.cs" />
     <Compile Include="Assets\Scripts\MapEditor\ME_grid.cs" />
     <Compile Include="Assets\Scripts\MapEditor\ME_MinusButton.cs" />
     <Compile Include="Assets\Scripts\MapEditor\ME_MultiplicationButton.cs" />
@@ -74,9 +79,13 @@
     <Compile Include="Assets\Scripts\Play\ec.cs" />
     <Compile Include="Assets\Scripts\Play\grid.cs" />
     <Compile Include="Assets\Scripts\Play\gridAnswer.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\ColorButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\ColorButton_From.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\ColorButton_To.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\Cover.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\DivisionButton.cs" />
+    <Compile Include="Assets\Scripts\Play\OperButtons\EraseLine.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\MinusButton.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\MultiplicationButton.cs" />
     <Compile Include="Assets\Scripts\Play\OperButtons\NumButton.cs" />
@@ -85,7 +94,6 @@
     <Compile Include="Assets\Scripts\Play\OperButtons\StackManager.cs" />
     <Compile Include="Assets\Scripts\Title\title_ec.cs" />
     <None Include="Assets\test.txt" />
-    <None Include="Assets\123.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/John/Unity/ArithPuzzle/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

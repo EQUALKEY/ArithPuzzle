@@ -12,6 +12,7 @@ public class StackManager : MonoBehaviour {
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
+        
         transform.GetChild(num).gameObject.SetActive(true);
     }
 	// Use this for initialization

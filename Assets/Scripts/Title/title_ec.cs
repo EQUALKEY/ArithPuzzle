@@ -23,4 +23,8 @@ public class title_ec : MonoBehaviour {
         PlayerPrefs.SetInt("stage", int.Parse(newstr[1]));
         SceneManager.LoadScene("play");
     }
+    public void gotoMapEditor()
+    {
+        SceneManager.LoadScene("MapEditor");
+    }
 }

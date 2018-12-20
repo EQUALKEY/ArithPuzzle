@@ -1,11 +1,12 @@
 WebGL
 PlayerPath?
-D:/Unity
+D:/John/BuildFiles/사칙연산퍼즐게임/20181220mapeditor
 SceneListBegin?
 Assets/Scenes/Title.unity
 Assets/Scenes/play.unity
+Assets/Scenes/MapEditor.unity
 SceneListEnd?
-cc9f485a7940cfb628d5d673e90402a6 Assembly-CSharp.dll:.MapEditorEC
+d84684c96c45808619db8f9a82d162d2 Assembly-CSharp.dll:.MapEditorEC
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 01aa15e337e3a9c62f15153dfac6d589 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
 7f05815dd10a4a81b3f21292d6ee9fc6 Assembly-CSharp.dll:.grid
@@ -175,10 +176,19 @@ d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.ME_NumButton
 df6f03178605c5e7fd516cd69bc529bb Assembly-CSharp.dll:.ME_grid
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.NumButton
-0964c0a7f0dc0c0a3ac5b45df2e02156 Assembly-CSharp.dll:.ec
+e96bc48a509f08ba8146307dfa0114cf Assembly-CSharp.dll:.ec
 c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 3165968ba45c74472d279ba04455fccb Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 8649814970b42d345b89944b862453cc Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.MultiplicationButton
 9d8da145ad45c54b94d39cb56c1532a7 Assembly-CSharp.dll:.PlusButton
 132f9bf1c9853a275c6d6bdf66d0d8d4 Assembly-CSharp.dll:.MinusButton
+9bba41384ae413383b7bb0bac18c48d7 Assembly-CSharp.dll:.ColorButton_From
+9bba41384ae413383b7bb0bac18c48d7 Assembly-CSharp.dll:.ColorButton_To
+b21583100ccfef8202041c83d0658e69 Assembly-CSharp.dll:.ChangeColor
+b21583100ccfef8202041c83d0658e69 Assembly-CSharp.dll:.ME_ChangeColor
+9bba41384ae413383b7bb0bac18c48d7 Assembly-CSharp.dll:.ME_ColorButton_From
+9bba41384ae413383b7bb0bac18c48d7 Assembly-CSharp.dll:.ME_ColorButton_To
+d6544be5d077847f9a7007f3759854b6 Assembly-CSharp.dll:.ME_Cover
+ee167c680951a548953d49dbf39f2c26 Assembly-CSharp.dll:.EraseLine
+ee167c680951a548953d49dbf39f2c26 Assembly-CSharp.dll:.ME_EraseLine

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class MapEditorEC : MonoBehaviour
 {
@@ -36,18 +37,22 @@ public class MapEditorEC : MonoBehaviour
 
     public InputField SaveInputField,LoadInputField;
     public Toggle SaveToggle;
-    public InputField[] StackOperIF = new InputField[5];
+    public InputField[] StackOperIF = new InputField[7];
     public InputField[] StackNumIF = new InputField[10];
     public InputField RemainIF;
 
-    public int[] Stack_Oper = new int[5]; // 0: null, 1 : + , 2 : - , 3: ×, 4 : ÷
-    public GameObject[] StackOfOper = new GameObject[5];
-    public int[] Stack_num = new int[5];
+    public int[] Stack_Oper = new int[7]; // 0: null, 1 : + , 2 : - , 3: ×, 4 : ÷
+    public GameObject[] StackOfOper = new GameObject[7];
+    public int[] Stack_num = new int[7];
     public GameObject[] StackOfNum = new GameObject[10];
 
     public int Oper; // 0 : 아무것도, 1 : + , 2 : - , 3: ×, 4 : ÷
     public int color; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
     public int Num;
+
+    public int color_from;
+    public int color_to;
+    public int is_Vertical; //0: null , 1:vertical 2: horizental
 
     public GameObject PlusButtonGO;
     private ME_PlusButton PBcs;
@@ -59,6 +64,8 @@ public class MapEditorEC : MonoBehaviour
     private ME_MultiplicationButton MPBcs;
     public GameObject DivisionButtonGO;
     private ME_DivisionButton DBcs;
+    public GameObject ChangeColorButtonGO;
+    public GameObject EraseLineButtonGO;
 
     public GameObject[] NumGO = new GameObject[10];
     public ME_NumButton[] Numcs = new ME_NumButton[10];
@@ -143,7 +150,7 @@ public class MapEditorEC : MonoBehaviour
         SetOperButton();
         Initialize();
 
-        newstageSRC = new stageSRC(0, new int[gridSize, gridSize], new int[gridSize, gridSize], new int[5], new int[10], 0);
+        newstageSRC = new stageSRC(gridSize, new int[gridSize, gridSize], new int[gridSize, gridSize], new int[7], new int[10], 0);
 
     }
     void Start()
@@ -489,6 +496,51 @@ public class MapEditorEC : MonoBehaviour
 
             end:;
         }
+        else if (Oper == 5) // change_color
+        {
+            if (color_from != 0 && color_to != 0)
+            {
+
+                SavePreData();
+                for (int i = LT.x; i <= RB.x; i++)
+                {
+                    for (int j = LT.y; j <= RB.y; j++)
+                    {
+                        if (gridNow[i, j] == color_from)
+                            gridcs.ChangeBlockColor(i, j, color_to);
+                    }
+                }
+
+                FinishOperate();
+            }
+        }
+        else if (Oper == 6) // erase_line
+        {
+
+            if (is_Vertical == 1)
+            {
+                SavePreData();
+                int i = LT.x;
+                for (int j = 0; j < gridSize; j++)
+                {
+                    gridcs.ChangeBlockColor(i, j, 0);
+                }
+
+                FinishOperate();
+            }
+            else if (is_Vertical == 2)
+            {
+                SavePreData();
+                int j = LT.y;
+                for (int i = 0; i < gridSize; i++)
+                {
+                    gridcs.ChangeBlockColor(i, j, 0);
+                }
+
+                FinishOperate();
+
+            }
+        }
         else // ?
         {
 
@@ -657,10 +709,14 @@ public class MapEditorEC : MonoBehaviour
             gridSize = 8;
         for (int i = Blocks.transform.childCount - 1; i >= 0; i--)
             Destroy(Blocks.transform.GetChild(i).gameObject);
-        newstageSRC = new stageSRC(0,new int[gridSize,gridSize],new int[gridSize,gridSize],new int[5],new int[10],0);
-        gridcs.MakeGrid(gridSize);
-        Initialize();
+        
+        newstageSRC = new stageSRC(gridSize,new int[gridSize,gridSize],new int[gridSize,gridSize],new int[7],new int[10],0);
+
         newstageSRC.size = gridSize;
+        Debug.Log(newstageSRC.size);
+        Initialize();
+        gridNow = new int[11, 11];
+        gridcs.MakeGrid(gridSize);
     }
 
     public void Initialize()
@@ -671,7 +727,7 @@ public class MapEditorEC : MonoBehaviour
         for (int i = gridcs.Blocks_Answer.transform.childCount - 1; i >= 0; i--)
             Destroy(gridcs.Blocks_Answer.transform.GetChild(i).gameObject);
 
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 6; i++)
             StackOperIF[i].text = "0";
         for (int i = 1; i <= 9; i++)
             StackNumIF[i].text = "0";
@@ -694,7 +750,7 @@ public class MapEditorEC : MonoBehaviour
             for (int i = 0; i < newstageSRC.size; i++)
                 for (int j = 0; j < newstageSRC.size; j++)
                     answerstr += newstageSRC.answer[i, j];
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= 6; i++)
                 Operstr += newstageSRC.Oper[i];
             for (int i = 0; i <= 9; i++)
                 Numstr += newstageSRC.Num[i];
@@ -740,10 +796,10 @@ public class MapEditorEC : MonoBehaviour
                     answerstr += ",\n";
             }
             Operstr += "{";
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= 6; i++)
             {
                 Operstr += newstageSRC.Oper[i];
-                if (i != 4)
+                if (i != 6)
                     Operstr += ",";
             }
             Operstr += "}";
@@ -770,7 +826,7 @@ public class MapEditorEC : MonoBehaviour
         newstageSRC.size = int.Parse(SR.ReadLine());
         newstageSRC.init = new int[newstageSRC.size, newstageSRC.size];
         newstageSRC.answer = new int[newstageSRC.size, newstageSRC.size];
-        newstageSRC.Oper = new int[5];
+        newstageSRC.Oper = new int[7];
         newstageSRC.Num = new int[10];
         initstr = SR.ReadLine();
         for (int i = 0; i < newstageSRC.size; i++)
@@ -781,12 +837,39 @@ public class MapEditorEC : MonoBehaviour
             for (int j = 0; j < newstageSRC.size; j++)
                 newstageSRC.answer[i, j] = answerstr[i * newstageSRC.size + j] - '0';
         Operstr = SR.ReadLine();
-        for (int i = 0; i <= 4; i++)
+        for (int i = 0; i <= 6; i++)
             newstageSRC.Oper[i] = Operstr[i] - '0'; 
         Numstr = SR.ReadLine();
         for (int i = 0; i <= 9; i++)
             newstageSRC.Num[i] = Numstr[i] - '0';
         newstageSRC.remain = int.Parse(SR.ReadLine());
+
+        gridSize = newstageSRC.size;
+        
+        if (gridSize == 4)
+            MapSizeDropdown.value = 0;
+        else if (gridSize == 6)
+            MapSizeDropdown.value = 1;
+        else if (gridSize == 8)
+            MapSizeDropdown.value = 2;
+        
+        for (int i = Blocks.transform.childCount - 1; i >= 0; i--)
+            Destroy(Blocks.transform.GetChild(i).gameObject);
+        for (int i = gridcs.Blocks_Init.transform.childCount - 1; i >= 0; i--)
+            Destroy(gridcs.Blocks_Init.transform.GetChild(i).gameObject);
+        for (int i = gridcs.Blocks_Answer.transform.childCount - 1; i >= 0; i--)
+            Destroy(gridcs.Blocks_Answer.transform.GetChild(i).gameObject);
+        for (int i = 1; i <= 6; i++)
+            StackOperIF[i].text = newstageSRC.Oper[i].ToString();
+        for (int i = 1; i <= 9; i++)
+            StackNumIF[i].text = newstageSRC.Num[i].ToString();
+        RemainIF.text = newstageSRC.remain.ToString();
+
+        gridNow = (int[,])newstageSRC.answer.Clone();
+        gridcs.MakeGridAnswer(gridSize);
+        gridNow = (int[,])newstageSRC.init.Clone();
+        gridcs.MakeGridInit(gridSize);
+        gridcs.MakeGrid(gridSize);
 
         SR.Close();
         Debug.Log(LoadInputField.text + ".txt is successfully loaded");
@@ -809,6 +892,8 @@ public class MapEditorEC : MonoBehaviour
         MBcs.Initialize();
         MPBcs.Initialize();
         DBcs.Initialize();
+        ChangeColorButtonGO.GetComponent<ME_ChangeColor>().Initialize();
+        EraseLineButtonGO.GetComponent<ME_EraseLine>().Initialize();
     }
     public void Clear_Num()
     {
@@ -845,9 +930,10 @@ public class MapEditorEC : MonoBehaviour
         StackOfOper[Oper].GetComponent<StackManager>().SetStack(Stack_Oper[Oper]);
         Stack_num[Num]--;
         StackOfNum[Num].GetComponent<StackManager>().SetStack(Stack_num[Num]);*/
-        StackNumIF[Num].text = (int.Parse(StackNumIF[Num].text) + 1).ToString();
+        if(Oper !=5 && Oper!=6)
+            StackNumIF[Num].text = (int.Parse(StackNumIF[Num].text) + 1).ToString();
         StackOperIF[Oper].text = (int.Parse(StackOperIF[Oper].text) + 1).ToString();
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 6; i++)
             newstageSRC.Oper[i] = int.Parse(StackOperIF[i].text);
         for (int i = 1; i <= 9; i++)
             newstageSRC.Num[i] = int.Parse(StackNumIF[i].text);
@@ -894,5 +980,9 @@ public class MapEditorEC : MonoBehaviour
     void PopDisable()
     {
 
+    }
+    public void gotoTitle()
+    {
+        SceneManager.LoadScene("Title");
     }
 }

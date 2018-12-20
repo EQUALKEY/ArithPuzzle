@@ -76,6 +76,42 @@ public class ME_grid : MonoBehaviour {
             }
         }
     }
+    public void MakeGrid_Load(int num)
+    {
+        int index;
+        if (num == 4)
+            index = 0;
+        else if (num == 6)
+            index = 1;
+        else
+            index = 2;
+        float dis_x = (RightBottom[index].transform.position.x - LeftTop[index].transform.position.x) / (num - 1);
+        float dis_y = (LeftTop[index].transform.position.y - RightBottom[index].transform.position.y) / (num - 1);
+        float disView_x = (RightBottomView[index].transform.position.x - LeftTopView[index].transform.position.x) / (num - 1);
+        float disView_y = (LeftTopView[index].transform.position.y - RightBottomView[index].transform.position.y) / (num - 1);
+
+        for (int i = 0; i <= num; i++)
+        {
+            for (int j = 0; j <= num; j++)
+            {
+                eccs = EC.GetComponent<MapEditorEC>();
+
+                eccs.gridArr[i, j] = new Vector2(LeftTop[index].transform.position.x + (dis_x * i), LeftTop[index].transform.position.y - (dis_y * j));
+                eccs.gridViewArr[i, j] = new Vector2(LeftTopView[index].transform.position.x + (disView_x * i), LeftTopView[index].transform.position.y - (disView_y * j));
+                eccs.gridViewArr[i, j].x *= Screen.width / width;
+                eccs.gridViewArr[i, j].y = (eccs.gridViewArr[i, j].y - Screen.height / 2f + height / 2f) * (Screen.height / height);
+                if (i != num && j != num)
+                {
+                    GameObject newblock = Instantiate(BlockPref[index], eccs.gridArr[i, j], new Quaternion(0f, 0f, 0f, 1f));
+                    newblock.name = "Block(" + i + "," + j + ")";
+                    newblock.transform.SetParent(Blocks.transform, false);
+                    newblock.transform.position = eccs.gridArr[i, j];
+                    ChangeBlockColor(newblock, i, j, 0);
+                    eccs.gridNow[i, j] = 0;
+                }
+            }
+        }
+    }
     public void MakeGridInit(int num)
     {
         int index;
