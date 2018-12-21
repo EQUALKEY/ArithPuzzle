@@ -683,6 +683,7 @@ public class MapEditorEC : MonoBehaviour
         }
         StackNumIF[Num_Pre].text = (int.Parse(StackNumIF[Num_Pre].text) - 1).ToString();
         StackOperIF[Oper_Pre].text = (int.Parse(StackOperIF[Oper_Pre].text) - 1).ToString();
+        RemainIF.text = (int.Parse(RemainIF.text) - 1).ToString();
         /*  Stack_num = (int[])(Stack_num_Pre.Clone());
           for (int i = 1; i < 10; i++)
               StackOfNum[i].GetComponent<StackManager>().SetStack(Stack_num[i]);
@@ -811,7 +812,7 @@ public class MapEditorEC : MonoBehaviour
                     Numstr += ",";
             }
             Numstr += "}";
-            SW.WriteLine("newstageSRC(" + newstageSRC.size + ",\nnew int[,] {\n" + initstr + "},\nnew int[,] {\n" + answerstr + "},\nnew int[] " + Operstr + ",\nnew int[] " + Numstr + ",\n" + newstageSRC.remain + "\n"  + ")\n");
+            SW.WriteLine("new stageSRC(" + newstageSRC.size + ",\nnew int[,] {\n" + initstr + "},\nnew int[,] {\n" + answerstr + "},\nnew int[] " + Operstr + ",\nnew int[] " + Numstr + ",\n" + newstageSRC.remain + "\n"  + ")\n");
             SW.Close();
             Debug.Log(SaveInputField.text + ".txt is successfully saved");
         }
