@@ -138,7 +138,7 @@ public class ec : MonoBehaviour {
         OffInteractable_Num();
         SetOperButton();
 
-        
+        gridcs.isfinish_setting = true;
     }
 
     // Use this for initialization

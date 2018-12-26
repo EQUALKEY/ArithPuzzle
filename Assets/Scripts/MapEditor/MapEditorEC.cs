@@ -155,7 +155,33 @@ public class MapEditorEC : MonoBehaviour
     }
     void Start()
     {
-        
+        StreamWriter SW = new StreamWriter(new FileStream("Assets\\" + "imsi.txt", FileMode.OpenOrCreate));
+        SW.Flush();
+        for (int k = 1; k <= 11; k++)
+        {
+            for (int i = 1; i <= 9; i++)
+            {
+                for (int j = 1; j <= 11; j++)
+                {
+                    if (j < 10)
+                        SW.WriteLine(k.ToString()+"0" + i.ToString());
+                    else
+                        SW.WriteLine(k.ToString() + "0" + i.ToString() );
+                }
+            }
+            for (int i = 10; i <= 11; i++)
+            {
+                for (int j = 1; j <= 11; j++)
+                {
+                    if (j < 10)
+                        SW.WriteLine(k.ToString() + i.ToString() );
+                    else
+                        SW.WriteLine(k.ToString() + i.ToString());
+                }
+            }
+        }
+        SW.WriteLine("");
+        SW.Close();
     }
 
     // Update is called once per frame

@@ -23,6 +23,9 @@ public class grid : MonoBehaviour {
     public GameObject BlockPref;
     public GameObject Blocks; // 0: 흰색 1: 빨간색 2: 노란색 3: 파란색 4: 초록색 5: 검은색
 
+    public AudioSource CreateBlock;
+    public bool isfinish_setting = false;
+
     private void Awake()
     {
         eccs = EC.GetComponent<ec>();
@@ -76,6 +79,8 @@ public class grid : MonoBehaviour {
     }
     public void ChangeBlockColor(int i,int j,int color)
     {
+        if(isfinish_setting)
+            CreateBlockAudioPlay();
         GameObject GO = GameObject.Find("Block(" + i + "," + j + ")");
         for (int k = 0; k < GO.transform.childCount; k++)
             GO.transform.GetChild(k).gameObject.SetActive(false);
@@ -93,5 +98,9 @@ public class grid : MonoBehaviour {
     {
         if (eccs.gridNow == eccs.gridAnswer)
             eccs.StageEnd();
+    }
+    public void CreateBlockAudioPlay()
+    {
+        CreateBlock.Play();
     }
 }

@@ -1,6 +1,6 @@
 WebGL
 PlayerPath?
-D:/John/BuildFiles/사칙연산퍼즐게임/20181220mapeditor
+D:/John/BuildFiles/사칙연산퍼즐게임/20181224
 SceneListBegin?
 Assets/Scenes/Title.unity
 Assets/Scenes/play.unity
@@ -9,7 +9,7 @@ SceneListEnd?
 d84684c96c45808619db8f9a82d162d2 Assembly-CSharp.dll:.MapEditorEC
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 01aa15e337e3a9c62f15153dfac6d589 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
-7f05815dd10a4a81b3f21292d6ee9fc6 Assembly-CSharp.dll:.grid
+a36e17c3bad56369459a60636c366fa9 Assembly-CSharp.dll:.grid
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 06f0fef534ca4c1d6064fd77a26bf722 UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 8747051d8c53856e2def93af4f2a8b08 UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset

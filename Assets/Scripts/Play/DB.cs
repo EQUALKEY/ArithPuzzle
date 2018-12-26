@@ -1401,7 +1401,7 @@ new int[] { 0, 0, 0, 2, 1, 0, 0, 0, 0, 0 },
 )
 
 ;
-        stageDB[2, 51] = new stageSRC(6,
+        stageDB[2, 26] = new stageSRC(6,
 new int[,] {
 {2,3,3,3,3,3},
 {2,0,0,0,0,0},
@@ -1424,7 +1424,7 @@ new int[] { 0, 0, 2, 0, 2, 0, 0, 0, 0, 0 },
 )
 
 ;
-        stageDB[2, 52] = new stageSRC(4,
+        stageDB[2, 27] = new stageSRC(4,
 new int[,] {
 {0,4,4,0},
 {0,4,4,0},
@@ -1443,7 +1443,7 @@ new int[] { 0, 0, 0, 1, 2, 0, 0, 0, 0, 1 },
 )
 
 ;
-        stageDB[2, 53] = new stageSRC(6,
+        stageDB[2, 28] = new stageSRC(6,
 new int[,] {
 {0,0,0,3,3,3},
 {0,0,0,3,3,3},
@@ -1466,7 +1466,7 @@ new int[] { 0, 1, 1, 1, 2, 1, 0, 0, 0, 0 },
 )
 
 ;
-        stageDB[2, 54] = new stageSRC(4,
+        stageDB[2, 29] = new stageSRC(4,
 new int[,] {
 {0,0,0,0},
 {0,0,0,0},
@@ -1485,7 +1485,7 @@ new int[] { 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
 )
 
 ;
-        stageDB[2, 55] = new stageSRC(6,
+        stageDB[2, 30] = new stageSRC(6,
 new int[,] {
 {0,0,0,0,0,0},
 {0,4,4,3,3,0},

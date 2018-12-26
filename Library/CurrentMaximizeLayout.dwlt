@@ -23,10 +23,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 907, y: 424}
-  m_MaxSize: {x: 22002, y: 10000}
+  m_MinSize: {x: 917, y: 448}
+  m_MaxSize: {x: 22012, y: 10024}
   vertical: 0
-  controlID: 21301
+  controlID: 5244
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -128,10 +128,10 @@ MonoBehaviour:
     y: 0
     width: 908
     height: 947
-  m_MinSize: {x: 202, y: 424}
-  m_MaxSize: {x: 4002, y: 8024}
+  m_MinSize: {x: 202, y: 448}
+  m_MaxSize: {x: 4002, y: 8048}
   vertical: 1
-  controlID: 21302
+  controlID: 5208
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -151,8 +151,8 @@ MonoBehaviour:
     y: 0
     width: 908
     height: 486
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 224}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 5}
   m_Panes:
   - {fileID: 5}
@@ -257,8 +257,8 @@ MonoBehaviour:
     y: 486
     width: 908
     height: 461
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 224}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -283,8 +283,8 @@ MonoBehaviour:
     y: 0
     width: 308
     height: 947
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 204, y: 224}
+  m_MaxSize: {x: 4004, y: 4024}
   m_ActualView: {fileID: 8}
   m_Panes:
   - {fileID: 8}
@@ -321,7 +321,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 44a8efffc01af0ffd41af0ff4e1cf0ff361df0ff3a1df0ff589ff1ff5a9ff1ff5e9ff1ff609ff1ff629ff1ff649ff1ff669ff1ff689ff1ff769ff1ff7a9ff1ff7e9ff1ff809ff1ff829ff1ff849ff1ff869ff1ff929ff1ff7ea0f1ff80a0f1ff84a0f1ff86a0f1ff88a0f1ff8ea0f1ff90a0f1ff92a0f1ff9ca0f1ffa0a0f1ffa4a0f1ffa6a0f1ffa8a0f1ffaaa0f1ffaca0f1ffb8a0f1ff7ca2f1ff84a5f1ff86a5f1ff88a5f1ff8ca5f1ff8ea5f1ff92a5f1ff94a5f1ff96a5f1ff9ca5f1ff9ea5f1ffa6a5f1ffaaa5f1ffaca5f1ffaea5f1ffb2a5f1ffbea5f1ffc0baf3ff5e92f4ffb449f9ffbc54f9ffc054f9ffc454f9ffc854f9ffcc54f9ffd055f9ffd455f9ffd855f9ffdc55f9ffe055f9ff1e5df9ffd464f9ff1841feff2a52feffd4fbffffae3d00009a40000042420000c0460000ca6800000c6e00006c6e000064970000829700008c970000f8970000acb6000098b9000040bb0000523e02005c3e0200c83f0200d63f020026c70700
+      m_ExpandedIDs: 6674feff2839ffff7441ffff0469ffffd4fbffff203901002a3901000e3b0100923c0100003e010088520100a85b0100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -364,8 +364,8 @@ MonoBehaviour:
     y: 0
     width: 275
     height: 947
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 234, y: 274}
+  m_MaxSize: {x: 10004, y: 10024}
   m_ActualView: {fileID: 10}
   m_Panes:
   - {fileID: 10}
@@ -409,20 +409,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Audios
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Audios
   m_LastFoldersGridSize: 96
   m_LastProjectPath: D:\John\Unity\ArithPuzzle
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: b6260000
-    m_LastClickedID: 9910
-    m_ExpandedIDs: 0000000056260000be26000098280000cc2800005e2900007a29000000ca9a3b
+    m_SelectedIDs: 82600000
+    m_LastClickedID: 24706
+    m_ExpandedIDs: 0000000056260000d4260000522900000c2a0000322a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -450,7 +450,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000056260000be26000098280000cc2800005e2900007a29000000ca9a3b
+    m_ExpandedIDs: 0000000056260000d4260000522900000c2a0000322a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -475,8 +475,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 884a0200
+    m_LastClickedInstanceID: 150152
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 7c2c0000a62c0000882c0000462c0000cc2c0000620b00003a0d0000
     m_RenameOverlay:
@@ -494,7 +494,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 4}
+      m_ClientGUIView: {fileID: 9}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -524,8 +524,8 @@ MonoBehaviour:
     y: 0
     width: 429
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 74}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
